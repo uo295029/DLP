@@ -1,0 +1,247 @@
+' Generated with VGen 2.0.0
+
+@startuml
+
+class Position {
+    +int getLine()
+    +int getColumn()
+    +boolean lessThan(Position other)
+    +boolean greaterThan(Position other)
+}
+
+interface AST {
+    +updatePositions(Object... children)
+    +updatePositions(Position start, Position end)
+    +Object accept(Visitor visitor, Object param)
+}
+
+AST *-[#404040,thickness=1]- Position : start >
+AST *-[#404040,thickness=1]- Position : end >
+
+
+interface Type {
+}
+AST <|-[#808080]- Type
+abstract AbstractType
+Type <|-[#808080]- AbstractType
+AbstractAST <|-[#808080]- AbstractType
+
+interface Statement {
+}
+AST <|-[#808080]- Statement
+abstract AbstractStatement
+Statement <|-[#808080]- AbstractStatement
+AbstractAST <|-[#808080]- AbstractStatement
+Statement -[#3366cc,thickness=3]-  FunctionDefinition #text:3366cc : function >
+
+interface Expression {
+	..<color:#3366cc> TypeChecking </color>..
+	+<color:#3366cc>boolean lvalue</color>
+}
+AST <|-[#808080]- Expression
+abstract AbstractExpression
+Expression <|-[#808080]- AbstractExpression
+AbstractAST <|-[#808080]- AbstractExpression
+Expression -[#3366cc,thickness=3]-  Type #text:3366cc : type >
+
+interface Definition {
+}
+AST <|-[#808080]- Definition
+abstract AbstractDefinition
+Definition <|-[#808080]- AbstractDefinition
+AbstractAST <|-[#808080]- AbstractDefinition
+
+interface AST {
+}
+abstract AbstractAST
+AST <|-[#808080]- AbstractAST
+
+class Program {
+}
+AbstractAST <|-[#808080]- Program
+Program o-[#404040,thickness=2]- "✱" Definition : definitions >
+
+class VarDefinition {
+	+String name
+	..<color:#669900> MemoryAllocation </color>..
+	+<color:#669900>int offset</color>
+	+<color:#669900>int scope</color>
+}
+AbstractDefinition <|-[#808080]- VarDefinition
+VarDefinition o-[#404040,thickness=2]-  Type : type >
+
+class FunctionDefinition {
+	+String name
+}
+AbstractDefinition <|-[#808080]- FunctionDefinition
+FunctionDefinition o-[#404040,thickness=2]- "✱" VarDefinition : params >
+FunctionDefinition o-[#404040,thickness=2]-  Type : type >
+FunctionDefinition o-[#404040,thickness=2]- "✱" VarDefinition : v >
+FunctionDefinition o-[#404040,thickness=2]- "✱" Statement : s >
+
+class StructDefinition {
+	+String name
+}
+AbstractDefinition <|-[#808080]- StructDefinition
+StructDefinition o-[#404040,thickness=2]- "✱" Attribute : attributes >
+
+class Attribute {
+	+String name
+	..<color:#669900> MemoryAllocation </color>..
+	+<color:#669900>int offset</color>
+}
+AbstractAST <|-[#808080]- Attribute
+Attribute o-[#404040,thickness=2]-  Type : type >
+
+class Assignment {
+}
+AbstractStatement <|-[#808080]- Assignment
+Assignment o-[#404040,thickness=2]-  Expression : left >
+Assignment o-[#404040,thickness=2]-  Expression : right >
+
+class FunctionCallS {
+	+String name
+}
+AbstractStatement <|-[#808080]- FunctionCallS
+FunctionCallS o-[#404040,thickness=2]- "✱" Expression : params >
+FunctionCallS -[#ff6600,thickness=3]-  FunctionDefinition #text:ff6600 : functionDefinition >
+
+class Return {
+}
+AbstractStatement <|-[#808080]- Return
+Return o-[#404040,thickness=2]- "0..1" Expression : expression >
+
+class If {
+}
+AbstractStatement <|-[#808080]- If
+If o-[#404040,thickness=2]-  Expression : condition >
+If o-[#404040,thickness=2]- "✱" Statement : yes >
+If o-[#404040,thickness=2]- "✱" Statement : no >
+
+class While {
+}
+AbstractStatement <|-[#808080]- While
+While o-[#404040,thickness=2]-  Expression : condition >
+While o-[#404040,thickness=2]- "✱" Statement : yes >
+
+class Print {
+}
+AbstractStatement <|-[#808080]- Print
+Print o-[#404040,thickness=2]- "✱" Expression : expressions >
+
+class Printsp {
+}
+AbstractStatement <|-[#808080]- Printsp
+Printsp o-[#404040,thickness=2]- "✱" Expression : expressions >
+
+class Println {
+}
+AbstractStatement <|-[#808080]- Println
+Println o-[#404040,thickness=2]- "✱" Expression : expressions >
+
+class Read {
+}
+AbstractStatement <|-[#808080]- Read
+Read o-[#404040,thickness=2]-  Expression : expression >
+
+class Variable {
+	+String name
+}
+AbstractExpression <|-[#808080]- Variable
+Variable -[#ff6600,thickness=3]-  VarDefinition #text:ff6600 : varDefinition >
+
+class IntLiteral {
+	+String value
+}
+AbstractExpression <|-[#808080]- IntLiteral
+
+class FloatLiteral {
+	+String value
+}
+AbstractExpression <|-[#808080]- FloatLiteral
+
+class CharLiteral {
+	+String value
+}
+AbstractExpression <|-[#808080]- CharLiteral
+
+class Arithmetic {
+	+String operator
+}
+AbstractExpression <|-[#808080]- Arithmetic
+Arithmetic o-[#404040,thickness=2]-  Expression : left >
+Arithmetic o-[#404040,thickness=2]-  Expression : right >
+
+class Negate {
+}
+AbstractExpression <|-[#808080]- Negate
+Negate o-[#404040,thickness=2]-  Expression : expression >
+
+class Logic {
+	+String operator
+}
+AbstractExpression <|-[#808080]- Logic
+Logic o-[#404040,thickness=2]-  Expression : left >
+Logic o-[#404040,thickness=2]-  Expression : right >
+
+class AttributeAccess {
+	+String right
+}
+AbstractExpression <|-[#808080]- AttributeAccess
+AttributeAccess o-[#404040,thickness=2]-  Expression : left >
+
+class Comparison {
+	+String operator
+}
+AbstractExpression <|-[#808080]- Comparison
+Comparison o-[#404040,thickness=2]-  Expression : left >
+Comparison o-[#404040,thickness=2]-  Expression : right >
+
+class ArrayAccess {
+}
+AbstractExpression <|-[#808080]- ArrayAccess
+ArrayAccess o-[#404040,thickness=2]-  Expression : left >
+ArrayAccess o-[#404040,thickness=2]-  Expression : right >
+
+class Cast {
+}
+AbstractExpression <|-[#808080]- Cast
+Cast o-[#404040,thickness=2]-  Type : castType >
+Cast o-[#404040,thickness=2]-  Expression : expression >
+
+class FunctionCallE {
+	+String name
+}
+AbstractExpression <|-[#808080]- FunctionCallE
+FunctionCallE o-[#404040,thickness=2]- "✱" Expression : params >
+FunctionCallE -[#ff6600,thickness=3]-  FunctionDefinition #text:ff6600 : functionDefinition >
+
+class IntType {
+}
+AbstractType <|-[#808080]- IntType
+
+class FloatType {
+}
+AbstractType <|-[#808080]- FloatType
+
+class CharType {
+}
+AbstractType <|-[#808080]- CharType
+
+class ArrayType {
+	+int size
+}
+AbstractType <|-[#808080]- ArrayType
+ArrayType o-[#404040,thickness=2]-  Type : type >
+
+class StructType {
+	+String name
+}
+AbstractType <|-[#808080]- StructType
+StructType -[#ff6600,thickness=3]-  StructDefinition #text:ff6600 : structDefinition >
+
+class VoidType {
+}
+AbstractType <|-[#808080]- VoidType
+
+@enduml
