@@ -4,36 +4,12 @@ struct Nombre {
     letras:[10]char;
 }
 
-struct Persona {
-    nombre:Nombre;
-    edad:int;
-}
+var n:Nombre;
+var f1:float;
+var i1:int;
 
-main() {
+main(p:int) {
     var a:int;
     var f:float;
     var c:char;
-    var v:[10]int;
-    var v10x10:[10][10]int;
-
-    var raul:Persona;
-
-    print;
-    print 1, 1.0, 'a', '\n';
-    print a, f, c;
-    print v[1], raul.edad;
-    print v10x10[0][0], raul.nombre.letras[1];
-
-    printsp;
-    printsp 1, 1.0, 'a', '\n';
-    printsp a, f, c;
-    printsp v[1], raul.edad;
-    printsp v10x10[0][0], raul.nombre.letras[1];
-
-    println;
-    println 1, 1.0, 'a', '\n';
-    println a, f, c;
-    println v[1], raul.edad;
-    println v10x10[0][0], raul.nombre.letras[1];
-
 }

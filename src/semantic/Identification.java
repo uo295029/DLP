@@ -34,6 +34,8 @@ public class Identification extends DefaultVisitor {
     // class VarDefinition(Type type, String name)
     @Override
     public Object visit(VarDefinition varDefinition, Object param) {
+    	if (varDefinition.getScope() != 1 && varDefinition.getScope() != 2) 
+    		varDefinition.setScope(0); // Scope 0 es para variables globales
         var definition = variables.getFromTop(varDefinition.getName());
         if (definition != null) 
         	notifyError("Variable already defined: " + varDefinition.getName(), varDefinition);
@@ -65,7 +67,15 @@ public class Identification extends DefaultVisitor {
  			functionDefinition.getType().accept(this, param);
  			functions.put(functionDefinition.getName(), functionDefinition);
  			variables.set();
- 			super.visit(functionDefinition, param);
+ 			functionDefinition.getParams().forEach(varDefinition -> {
+ 				varDefinition.setScope(1); // Scope 1 es para los parámetros
+ 				varDefinition.accept(this, param);
+ 			});
+ 			functionDefinition.getV().forEach(varDefinition -> {
+ 	            varDefinition.setScope(2); // Scope 2 es para variables locales
+ 	            varDefinition.accept(this, param);
+ 	        });
+ 			functionDefinition.getS().forEach(statement -> statement.accept(this, param));
  			variables.reset();
  		}
  		return null;
