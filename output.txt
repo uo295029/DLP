@@ -1,0 +1,273 @@
+#source "input.txt"
+#TYPE Persona: {
+inicial:char
+sueldo:float
+}
+#GLOBAL empresa:4 * Persona
+call main
+halt
+#FUNC inicia
+#RET VOID
+#LOCAL i:int
+#LINE 28
+	inicia:
+enter 2
+#LINE 31
+pusha BP
+pushi -2
+addi
+pushi 0
+storei
+label1:
+#LINE 32
+pusha BP
+pushi -2
+addi
+loadi
+pushi 4
+lti
+jz label2
+#LINE 33
+pusha 0
+pusha BP
+pushi -2
+addi
+loadi
+pushi 5
+muli
+addi
+pushi 0
+addi
+addi
+pusha BP
+pushi -2
+addi
+loadi
+pushb 65
+b2i
+addi
+i2b
+storeb
+#LINE 34
+pusha 0
+pusha BP
+pushi -2
+addi
+loadi
+pushi 5
+muli
+addi
+addi
+pushi 1
+addi
+pushi 1000
+pusha BP
+pushi -2
+addi
+loadi
+pushi 100
+muli
+addi
+i2f
+storef
+#LINE 35
+pusha BP
+pushi -2
+addi
+pusha BP
+pushi -2
+addi
+loadi
+pushi 1
+addi
+storei
+jmp label1
+label2:
+ret	0,2,0
+#FUNC busca
+#PARAM i:int
+#RET VOID
+#LINE 39
+	busca:
+enter 0
+#LINE 40
+pusha BP
+pushi 4
+addi
+loadi
+pushi 0
+lti
+pusha BP
+pushi 4
+addi
+loadi
+pushi 4
+gei
+or
+jz label3
+#LINE 41
+ret	0,0,2
+jmp label4
+label3:
+label4:
+#LINE 43
+pusha 0
+pusha BP
+pushi 4
+addi
+loadi
+pushi 5
+muli
+addi
+pushi 0
+addi
+addi
+loadb
+outb
+pushb 32
+outb
+#LINE 44
+pusha 0
+pusha BP
+pushi 4
+addi
+loadi
+pushi 5
+muli
+addi
+addi
+pushi 1
+addi
+loadf
+outf
+pushb 10
+outb
+ret	0,0,2
+#FUNC imprime
+#RET int
+#LOCAL i:int
+#LOCAL aux:Persona
+#LINE 47
+	imprime:
+enter 7
+#LINE 51
+pusha BP
+pushi -2
+addi
+pushi 0
+storei
+label5:
+#LINE 52
+pusha BP
+pushi -2
+addi
+loadi
+pushi 4
+gei
+not
+jz label6
+#LINE 53
+pusha BP
+pushi -7
+addi
+pushi 0
+addi
+addi
+pusha 0
+pusha BP
+pushi -2
+addi
+loadi
+pushi 5
+muli
+addi
+pushi 0
+addi
+addi
+loadb
+storeb
+#LINE 54
+pusha BP
+pushi -7
+addi
+addi
+pushi 1
+addi
+pusha 0
+pusha BP
+pushi -2
+addi
+loadi
+pushi 5
+muli
+addi
+addi
+pushi 1
+addi
+loadf
+storef
+#LINE 56
+pusha BP
+pushi -7
+addi
+pushi 0
+addi
+addi
+loadb
+outb
+pushb 32
+outb
+#LINE 57
+pusha BP
+pushi -7
+addi
+addi
+pushi 1
+addi
+loadf
+outf
+pushb 10
+outb
+#LINE 59
+pusha BP
+pushi -2
+addi
+pusha BP
+pushi -2
+addi
+loadi
+pushi 1
+addi
+storei
+jmp label5
+label6:
+#LINE 61
+pusha BP
+pushi -2
+addi
+loadi
+ret	2,7,0
+#FUNC main
+#RET VOID
+#LOCAL posicion:int
+#LINE 64
+	main:
+enter 2
+#LINE 67
+call inicia
+#LINE 69
+pusha BP
+pushi -2
+addi
+ini
+storei
+#LINE 70
+pusha BP
+pushi -2
+addi
+loadi
+call busca
+#LINE 72
+call imprime
+popi
+ret	0,2,0

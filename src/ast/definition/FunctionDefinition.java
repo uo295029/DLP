@@ -19,6 +19,10 @@ import visitor.Visitor;
 /*
 	functionDefinition: definition -> name:string params:varDefinition* type:type v:varDefinition* s:statement*
 	definition -> 
+	
+	PHASE MemoryAllocation
+	functionDefinition -> varsSize:int
+	functionDefinition -> paramsSize:int
 */
 public class FunctionDefinition extends AbstractDefinition  {
 
@@ -31,6 +35,10 @@ public class FunctionDefinition extends AbstractDefinition  {
 	private Type type;
 	private List<VarDefinition> v;
 	private List<Statement> s;
+
+    // PHASE MemoryAllocation
+	private int varsSize;
+	private int paramsSize;
 
     // ----------------------------------
     // Constructors
@@ -164,6 +172,34 @@ public class FunctionDefinition extends AbstractDefinition  {
     }
 
 
+
+    // --------------------------------
+    // PHASE MemoryAllocation
+
+	// Attribute 'varsSize:int' 
+
+	public void setVarsSize(int varsSize) {
+		this.varsSize = varsSize;
+
+	}
+
+    public int getVarsSize() {
+        return varsSize;
+    }
+
+
+	// Attribute 'paramsSize:int' 
+
+	public void setParamsSize(int paramsSize) {
+		this.paramsSize = paramsSize;
+
+	}
+
+    public int getParamsSize() {
+        return paramsSize;
+    }
+
+
     // ----------------------------------
     // Helper methods
 
@@ -179,7 +215,7 @@ public class FunctionDefinition extends AbstractDefinition  {
 
 
     // %% User Members -------------------------
-
+    
         // Methods/attributes in this section will be preserved. Delete if not needed
 
     // %% --------------------------------------

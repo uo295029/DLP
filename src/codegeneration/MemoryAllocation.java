@@ -35,13 +35,19 @@ public class MemoryAllocation extends DefaultVisitor {
 	public Object visit(FunctionDefinition functionDefinition, Object param) {
 		super.visit(functionDefinition, param);
 		localAddress = 0;
-		int n = 0;
+		int n = 4;
+		int varsSize = 0;
 		VarDefinition p;
 		for(int i = functionDefinition.getParams().size() - 1; i >= 0; i--) {
 			p = functionDefinition.getParams().get(i);
 			p.setOffset(n);
 			n += p.getType().getBytes();
 		}
+		for (VarDefinition def : functionDefinition.getV()) {
+            varsSize += def.getType().getBytes();
+        }
+		functionDefinition.setVarsSize(varsSize);
+        functionDefinition.setParamsSize(n - 4);
 		return null;
 	}
 

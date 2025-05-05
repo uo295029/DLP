@@ -66,3 +66,14 @@ ATTRIBUTE GRAMMAR MemoryAllocation
 varDefinition -> offset:int;
 varDefinition -> scope:int;
 attribute -> offset:int;
+functionDefinition -> varsSize:int;
+functionDefinition -> paramsSize:int;
+
+CODE SPECIFICATION Mapl
+run[program]
+execute[statement]
+value[expression]
+address[expression]
+
+metadata[program]
+metadata[varDefinition]

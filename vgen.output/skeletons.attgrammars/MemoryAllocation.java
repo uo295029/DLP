@@ -101,6 +101,7 @@ public class MemoryAllocation extends DefaultVisitor {
 	}
 
 	// class FunctionDefinition(String name, List<VarDefinition> params, Type type, List<VarDefinition> v, List<Statement> s)
+	// phase MemoryAllocation { int varsSize, int paramsSize }
 	@Override
 	public Object visit(FunctionDefinition functionDefinition, Object param) {
 
@@ -110,6 +111,9 @@ public class MemoryAllocation extends DefaultVisitor {
 		// functionDefinition.getS().forEach(statement -> statement.accept(this, param));
 		super.visit(functionDefinition, param);
 
+		// TODO: Remember to initialize SYNTHESIZED attributes <-----
+		// functionDefinition.setVarsSize(?);
+		// functionDefinition.setParamsSize(?);
 		return null;
 	}
 

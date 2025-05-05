@@ -72,6 +72,9 @@ VarDefinition o-[#404040,thickness=2]-  Type : type >
 
 class FunctionDefinition {
 	+String name
+	..<color:#669900> MemoryAllocation </color>..
+	+<color:#669900>int varsSize</color>
+	+<color:#669900>int paramsSize</color>
 }
 AbstractDefinition <|-[#808080]- FunctionDefinition
 FunctionDefinition o-[#404040,thickness=2]- "✱" VarDefinition : params >

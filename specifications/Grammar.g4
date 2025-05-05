@@ -39,10 +39,10 @@ param returns[VarDefinition ast]
 	
 statement returns[Statement ast]
 	: i=ID '(' (args+=expression (',' args+=expression)*)? ')'';'					{ $ast = new FunctionCallS($i, $args); }
-	| 'print' e+=expression? (',' e+=expression)* ';'													{ $ast = new Print($e); }
-	| 'printsp' e+=expression? (',' e+=expression)* ';'													{ $ast = new Printsp($e); }
-	| 'println' e+=expression? (',' e+=expression)* ';'													{ $ast = new Println($e); }
-	| 'return' expression? ';'														{ $ast = new Return(($expression.ctx == null) ? null : $expression.ast); }
+	| 'print' e+=expression? (',' e+=expression)* ';'													{ $ast = new Print($e); $ast.updatePositions($ctx.start); }
+	| 'printsp' e+=expression? (',' e+=expression)* ';'													{ $ast = new Printsp($e); $ast.updatePositions($ctx.start); }
+	| 'println' e+=expression? (',' e+=expression)* ';'													{ $ast = new Println($e); $ast.updatePositions($ctx.start); }
+	| 'return' expression? ';'														{ $ast = new Return(($expression.ctx == null) ? null : $expression.ast); $ast.updatePositions($ctx.start); }
 	| 'read' expression ';'															{ $ast = new Read($expression.ast); }
 	| e1=expression '=' e2=expression';'											{ $ast = new Assignment($e1.ast, $e2.ast); }
 	| 'if' '('expression')' '{' s1+=statement* '}' ('else' '{' s2+=statement* '}')?	{ $ast = new If($expression.ast, $s1, $s2); }
