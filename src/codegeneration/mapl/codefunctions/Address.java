@@ -39,8 +39,10 @@ public class Address extends AbstractCodeFunction {
 
 		address(attributeAccess.getLeft());
 		for(Attribute a : ((StructType) attributeAccess.getLeft().getType()).getStructDefinition().getAttributes()) {
-			if(a.getName().equals(attributeAccess.getRight())) out("pushi " + a.getOffset());
-			out("addi");
+			if(a.getName().equals(attributeAccess.getRight())) {
+				out("pushi " + a.getOffset());
+				out("addi");
+			}
 		}
 
 		return null;
