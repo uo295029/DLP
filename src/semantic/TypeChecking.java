@@ -44,7 +44,6 @@ public class TypeChecking extends DefaultVisitor {
     	return null;
     }
     
-    // class Assignment(Expression left, Expression right)
     @Override
     public Object visit(Assignment assignment, Object param) {
         super.visit(assignment, param);
@@ -132,9 +131,6 @@ public class TypeChecking extends DefaultVisitor {
     	return null;
     }
     
-    // class Variable(String name)
-    // phase Identification { VarDefinition varDefinition }
-    // phase TypeChecking { Type type, boolean lvalue }
     @Override
     public Object visit(Variable variable, Object param) {
     	super.visit(variable, param);
@@ -143,8 +139,6 @@ public class TypeChecking extends DefaultVisitor {
         return null;
     }
 
-    // class IntLiteral(int intValue)
-    // phase TypeChecking { Type type, boolean lvalue }
     @Override
     public Object visit(IntLiteral intLiteral, Object param) {
         intLiteral.setType(new IntType());
@@ -152,8 +146,6 @@ public class TypeChecking extends DefaultVisitor {
         return null;
     }
 
-    // class FloatLiteral(float floatValue)
-    // phase TypeChecking { Type type, boolean lvalue }
     @Override
     public Object visit(FloatLiteral floatLiteral, Object param) {
         floatLiteral.setType(new FloatType());
@@ -168,8 +160,6 @@ public class TypeChecking extends DefaultVisitor {
         return null;
     }
 
-    // class Arithmetic(Expression left, String operator, Expression right)
-    // phase TypeChecking { Type type, boolean lvalue }
     @Override
     public Object visit(Arithmetic arithmetic, Object param) {
         super.visit(arithmetic, param);

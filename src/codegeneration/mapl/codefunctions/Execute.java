@@ -33,8 +33,6 @@ public class Execute extends AbstractCodeFunction {
 		return null;
 	}
 
-	// class Assignment(Expression left, Expression right)
-	// phase TypeChecking { FunctionDefinition function }
 	@Override
 	public Object visit(Assignment assignment, Object param) {
 
@@ -46,9 +44,6 @@ public class Execute extends AbstractCodeFunction {
 		return null;
 	}
 
-	// class FunctionCallS(String name, List<Expression> params)
-	// phase Identification { FunctionDefinition functionDefinition }
-	// phase TypeChecking { FunctionDefinition function }
 	@Override
 	public Object visit(FunctionCallS functionCallS, Object param) {
 
@@ -63,9 +58,7 @@ public class Execute extends AbstractCodeFunction {
 
 		return null;
 	}
-
-	// class Return(Optional<Expression> expression)
-	// phase TypeChecking { FunctionDefinition function }
+	
 	@Override
 	public Object visit(Return returnValue, Object param) {
 
@@ -86,8 +79,6 @@ public class Execute extends AbstractCodeFunction {
 		return null;
 	}
 
-	// class If(Expression condition, List<Statement> yes, List<Statement> no)
-	// phase TypeChecking { FunctionDefinition function }
 	@Override
 	public Object visit(If ifValue, Object param) {
 
@@ -109,8 +100,6 @@ public class Execute extends AbstractCodeFunction {
 		return null;
 	}
 
-	// class While(Expression condition, List<Statement> yes)
-	// phase TypeChecking { FunctionDefinition function }
 	@Override
 	public Object visit(While whileValue, Object param) {
 
@@ -129,8 +118,6 @@ public class Execute extends AbstractCodeFunction {
 		return null;
 	}
 
-	// class Print(List<Expression> expressions)
-	// phase TypeChecking { FunctionDefinition function }
 	@Override
 	public Object visit(Print print, Object param) {
 
@@ -143,8 +130,6 @@ public class Execute extends AbstractCodeFunction {
 		return null;
 	}
 
-	// class Printsp(List<Expression> expressions)
-	// phase TypeChecking { FunctionDefinition function }
 	@Override
 	public Object visit(Printsp printsp, Object param) {
 
@@ -163,8 +148,6 @@ public class Execute extends AbstractCodeFunction {
 		return null;
 	}
 
-	// class Println(List<Expression> expressions)
-	// phase TypeChecking { FunctionDefinition function }
 	@Override
 	public Object visit(Println println, Object param) {
 
@@ -183,8 +166,6 @@ public class Execute extends AbstractCodeFunction {
 		return null;
 	}
 
-	// class Read(Expression expression)
-	// phase TypeChecking { FunctionDefinition function }
 	@Override
 	public Object visit(Read read, Object param) {
 

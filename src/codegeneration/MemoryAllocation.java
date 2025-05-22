@@ -15,8 +15,6 @@ public class MemoryAllocation extends DefaultVisitor {
 
     // Visit Methods --------------------------------------------------------------
 
-	// class VarDefinition(String name, Type type)
-	// phase MemoryAllocation { int address }
 	@Override
 	public Object visit(VarDefinition varDefinition, Object param) {
 		super.visit(varDefinition, param);
@@ -30,7 +28,6 @@ public class MemoryAllocation extends DefaultVisitor {
 		return null;
 	}
 
-	// class FunctionDefinition(String name, List<VarDefinition> params, Type type, List<VarDefinition> v, List<Statement> s)
 	@Override
 	public Object visit(FunctionDefinition functionDefinition, Object param) {
 		super.visit(functionDefinition, param);
@@ -51,7 +48,6 @@ public class MemoryAllocation extends DefaultVisitor {
 		return null;
 	}
 
-	// class StructDefinition(String name, List<Attribute> attributes)
 	@Override
 	public Object visit(StructDefinition structDefinition, Object param) {
 		int address = 0;

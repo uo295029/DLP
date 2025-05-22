@@ -31,7 +31,7 @@ public class Identification extends DefaultVisitor {
     }
 
     // # ----------------------------------------------------------
-    // class VarDefinition(Type type, String name)
+    
     @Override
     public Object visit(VarDefinition varDefinition, Object param) {
     	if (varDefinition.getScope() != 1 && varDefinition.getScope() != 2) 
@@ -45,8 +45,6 @@ public class Identification extends DefaultVisitor {
         return null;
     }
 
-    // class Variable(String name)
-    // phase Identification { VarDefinition varDefinition }
     @Override
     public Object visit(Variable variable, Object param) {
         var definition = variables.getFromAny(variable.getName());
@@ -57,7 +55,6 @@ public class Identification extends DefaultVisitor {
         return null;
     }
     
-    // class FunctionDefinition(String name, List<VarDefinition> params, Type type, List<VarDefinition> v, List<Statement> s)
  	@Override
  	public Object visit(FunctionDefinition functionDefinition, Object param) {
  		var definition = functions.get(functionDefinition.getName());
@@ -81,8 +78,6 @@ public class Identification extends DefaultVisitor {
  		return null;
  	}
     
- 	// class FunctionCallS(String name, List<Expression> params)
- 	// phase Identification { FunctionDefinition functionDefinition }
  	@Override
  	public Object visit(FunctionCallS functionCallS, Object param) {
  		var definition = functions.get(functionCallS.getName());
@@ -94,8 +89,6 @@ public class Identification extends DefaultVisitor {
         return null;
  	}
  	
- 	// class FunctionCallE(String name, List<Expression> params)
- 	// phase Identification { FunctionDefinition functionDefinition }
  	@Override
  	public Object visit(FunctionCallE functionCallE, Object param) {
  		var definition = functions.get(functionCallE.getName());
@@ -107,7 +100,6 @@ public class Identification extends DefaultVisitor {
         return null;
  	}
     
-    // class StructDefinition(String name, List<Attribute> attributes)
  	@Override
  	public Object visit(StructDefinition structDefinition, Object param) {
  		Map<String, Attribute> attributes = new HashMap<String, Attribute>();
@@ -127,7 +119,6 @@ public class Identification extends DefaultVisitor {
  		return null;
  	}
  	
- 	// class StructType(String name)
  	@Override
  	public Object visit(StructType structType, Object param) {
  		var definition = structs.get(structType.getName());
@@ -140,10 +131,6 @@ public class Identification extends DefaultVisitor {
  	
     // # --------------------------------------------------------
     // Métodos auxiliares recomendados (opcionales) -------------
-
-    /*private void notifyError(String msg) {
-        errorManager.notify("Identification", msg);
-    }*/
 
     private void notifyError(String msg, Position position) {
         errorManager.notify("Identification", msg, position);
