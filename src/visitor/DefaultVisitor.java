@@ -103,6 +103,16 @@ public class DefaultVisitor implements Visitor {
 	}
 
 	@Override
+	public Object visit(For forValue, Object param) {
+
+		forValue.getVarDefinition().accept(this, param);
+		forValue.getCondition().accept(this, param);
+		forValue.getIncrement().accept(this, param);
+		forValue.getStatements().forEach(statement -> statement.accept(this, param));
+		return null;
+	}
+
+	@Override
 	public Object visit(Print print, Object param) {
 
 		print.getExpressions().forEach(expression -> expression.accept(this, param));

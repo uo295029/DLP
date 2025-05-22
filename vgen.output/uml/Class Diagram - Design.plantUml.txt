@@ -113,6 +113,14 @@ Statement <|-[#808080]- While
 While o-[#404040,thickness=2]-  Expression : condition >
 While o-[#404040,thickness=2]- "✱" Statement : yes >
 
+class For {
+}
+Statement <|-[#808080]- For
+For o-[#404040,thickness=2]-  VarDefinition : varDefinition >
+For o-[#404040,thickness=2]-  Expression : condition >
+For o-[#404040,thickness=2]-  Statement : increment >
+For o-[#404040,thickness=2]- "✱" Statement : statements >
+
 class Print {
 }
 Statement <|-[#808080]- Print
