@@ -185,6 +185,20 @@ public class SkeletonForNewVisitors extends DefaultVisitor {
 		return null;
 	}
 
+	// class For(VarDefinition varDefinition, Expression condition, Statement increment, List<Statement> statements)
+	// phase TypeChecking { FunctionDefinition function }
+	@Override
+	public Object visit(For forValue, Object param) {
+
+		// forValue.getVarDefinition().accept(this, param);
+		// forValue.getCondition().accept(this, param);
+		// forValue.getIncrement().accept(this, param);
+		// forValue.getStatements().forEach(statement -> statement.accept(this, param));
+		super.visit(forValue, param);
+
+		return null;
+	}
+
 	// class Print(List<Expression> expressions)
 	// phase TypeChecking { FunctionDefinition function }
 	@Override

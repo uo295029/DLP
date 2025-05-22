@@ -88,6 +88,25 @@ public class Execute extends AbstractCodeFunction {
 		return null;
 	}
 
+	// class For(VarDefinition varDefinition, Expression condition, Statement increment, List<Statement> statements)
+	// phase TypeChecking { FunctionDefinition function }
+	@Override
+	public Object visit(For forValue, Object param) {
+
+		// metadata(forValue.getVarDefinition());
+
+		// value(forValue.getCondition());
+		// address(forValue.getCondition());
+
+		// execute(forValue.getIncrement());
+
+		// execute(forValue.statements());
+
+		out("<instruction>");
+
+		return null;
+	}
+
 	// class Print(List<Expression> expressions)
 	// phase TypeChecking { FunctionDefinition function }
 	@Override

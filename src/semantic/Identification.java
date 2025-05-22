@@ -8,6 +8,7 @@ import ast.definition.StructDefinition;
 import ast.definition.VarDefinition;
 import ast.expression.FunctionCallE;
 import ast.expression.Variable;
+import ast.statement.For;
 import ast.statement.FunctionCallS;
 import ast.type.StructType;
 import main.ErrorManager;
