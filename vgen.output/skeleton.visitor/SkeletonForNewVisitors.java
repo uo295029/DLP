@@ -185,6 +185,18 @@ public class SkeletonForNewVisitors extends DefaultVisitor {
 		return null;
 	}
 
+	// class DoWhile(List<Statement> yes, Expression condition)
+	// phase TypeChecking { FunctionDefinition function }
+	@Override
+	public Object visit(DoWhile doWhile, Object param) {
+
+		// doWhile.getYes().forEach(statement -> statement.accept(this, param));
+		// doWhile.getCondition().accept(this, param);
+		super.visit(doWhile, param);
+
+		return null;
+	}
+
 	// class Print(List<Expression> expressions)
 	// phase TypeChecking { FunctionDefinition function }
 	@Override

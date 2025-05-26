@@ -97,6 +97,17 @@ public class TypeChecking extends DefaultVisitor {
     }
     
     @Override
+    public Object visit(DoWhile doWhile, Object param) {
+    	doWhile.getCondition().accept(this, param);
+    	predicate(doWhile.getCondition().getType() instanceof IntType, "The condition must be an integer", doWhile);
+    	for(Statement s : doWhile.getYes()) {
+    		s.setFunction(doWhile.getFunction());
+    	}
+    	super.visit(doWhile, param);
+    	return null;
+    }
+    
+    @Override
     public Object visit(Print print, Object param) {
     	super.visit(print, param);
     	for(Expression e : print.getExpressions()) {

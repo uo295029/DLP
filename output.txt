@@ -3,44 +3,45 @@ call main
 halt
 #FUNC main
 #RET VOID
+#LOCAL i:int
 #LOCAL j:int
-#LINE 3
+#LINE 1
 	main:
-enter 2
-#LINE 6
+enter 4
+#LINE 5
 pusha BP
 pushi -2
 addi
-pushi 5
+pushi 10
 storei
 label1:
+#LINE 9
+#LINE 7
+pusha BP
+pushi -2
+addi
+loadi
+outi
+pushb 10
+outb
 #LINE 8
-pusha 0
+pusha BP
+pushi -2
+addi
+pusha BP
+pushi -2
+addi
+loadi
+pushi 0
+pushi 1
+subi
+muli
+storei
+pusha BP
+pushi -2
+addi
 loadi
 pushi 5
 lti
-jz label2
-#LINE 9
-pusha 0
-loadi
-outi
-pushb 10
-outb
-#LINE 8
-pusha 0
-pusha 0
-loadi
-pushi 1
-addi
-storei
-jmp label1
-label2:
-#LINE 12
-pusha BP
-pushi -2
-addi
-loadi
-outi
-pushb 10
-outb
-ret	0,2,0
+jnz label1
+ret	0,4,0

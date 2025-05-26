@@ -88,6 +88,21 @@ public class Execute extends AbstractCodeFunction {
 		return null;
 	}
 
+	// class DoWhile(List<Statement> yes, Expression condition)
+	// phase TypeChecking { FunctionDefinition function }
+	@Override
+	public Object visit(DoWhile doWhile, Object param) {
+
+		// execute(doWhile.yes());
+
+		// value(doWhile.getCondition());
+		// address(doWhile.getCondition());
+
+		out("<instruction>");
+
+		return null;
+	}
+
 	// class Print(List<Expression> expressions)
 	// phase TypeChecking { FunctionDefinition function }
 	@Override

@@ -83,6 +83,12 @@ public class ExceptionThrowerVisitor implements Visitor {
 	}
 
 	@Override
+	public Object visit(DoWhile doWhile, Object param) {
+
+        throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(DoWhile)' has been invoked but it has not been implemented.");
+	}
+
+	@Override
 	public Object visit(Print print, Object param) {
 
         throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(Print)' has been invoked but it has not been implemented.");
