@@ -22,5 +22,7 @@ public interface Type extends AST {
 
 	public int getBytes();
 	
+	public boolean isSimple();
+	
     // %% --------------------------------------
 }

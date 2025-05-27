@@ -57,6 +57,37 @@ public abstract class AbstractCodeFunction extends ExceptionThrowerVisitor {
 		else if(type instanceof CharType) return "b";
 		return "";
 	}
+    
+    protected void convertTo(Type t1, Type t2) {
+		if(t1 instanceof CharType) {
+			if(t2 instanceof CharType) {
+				return;
+			} else if(t2 instanceof IntType) {
+				out("b2i");
+			} else if(t2 instanceof FloatType) {
+				out("b2i");
+				out("i2f");
+			}
+		} else if(t1 instanceof IntType) {
+			if(t2 instanceof IntType) {
+				return;
+			} else if(t2 instanceof CharType) {
+				out("i2b");
+			} else if(t2 instanceof FloatType) {
+				out("i2f");
+			}
+		} else if(t1 instanceof FloatType) {
+			if(t2 instanceof FloatType) {
+				return;
+			} else if(t2 instanceof IntType) {
+				out("f2i");
+			} else if(t2 instanceof CharType) {
+				out("f2i");
+				out("i2b");
+			}
+		}
+		else return;
+	}
     //# ------------------------------------------------------------------
     //# Método genérico para invocar cualquier función de código
 
