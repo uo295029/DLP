@@ -69,6 +69,15 @@ public class Value extends AbstractCodeFunction {
 
 		return null;
 	}
+	
+	@Override
+	public Object visit(BoolLiteral boolLiteral, Object param) {
+		
+		int value = boolLiteral.getValue().equals("true") ? 1 : 0;
+		out("pushi " + value);
+
+		return null;
+	}
 
 	@Override
 	public Object visit(Arithmetic arithmetic, Object param) {

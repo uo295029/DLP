@@ -168,6 +168,11 @@ class CharLiteral {
 }
 AbstractExpression <|-[#808080]- CharLiteral
 
+class BoolLiteral {
+	+String value
+}
+AbstractExpression <|-[#808080]- BoolLiteral
+
 class Arithmetic {
 	+String operator
 }
@@ -230,6 +235,10 @@ AbstractType <|-[#808080]- FloatType
 class CharType {
 }
 AbstractType <|-[#808080]- CharType
+
+class BoolType {
+}
+AbstractType <|-[#808080]- BoolType
 
 class ArrayType {
 	+int size

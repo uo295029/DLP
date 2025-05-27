@@ -73,6 +73,8 @@ public class Metadata extends AbstractCodeFunction {
 			return "float";
 		if (type instanceof CharType)
 			return "char";
+		if (type instanceof BoolType)
+			return "int";
 		if (type instanceof ArrayType tp)
 			return tp.getSize() + " * " + getMaplName(tp.getType());
 		if (type instanceof StructType st)

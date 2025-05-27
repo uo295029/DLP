@@ -277,6 +277,14 @@ public class MemoryAllocation extends DefaultVisitor {
 		return null;
 	}
 
+	// class BoolLiteral(String value)
+	// phase TypeChecking { Type type, boolean lvalue }
+	@Override
+	public Object visit(BoolLiteral boolLiteral, Object param) {
+
+		return null;
+	}
+
 	// class Arithmetic(Expression left, String operator, Expression right)
 	// phase TypeChecking { Type type, boolean lvalue }
 	@Override
@@ -388,6 +396,13 @@ public class MemoryAllocation extends DefaultVisitor {
 	// class CharType()
 	@Override
 	public Object visit(CharType charType, Object param) {
+
+		return null;
+	}
+
+	// class BoolType()
+	@Override
+	public Object visit(BoolType boolType, Object param) {
 
 		return null;
 	}

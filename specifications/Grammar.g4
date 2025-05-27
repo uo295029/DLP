@@ -72,6 +72,7 @@ type returns[Type ast]
 	: 'int' 					{ $ast = new IntType(); }
 	| 'float'					{ $ast = new FloatType(); }
 	| 'char'					{ $ast = new CharType(); }
+	| 'bool'					{ $ast = new BoolType(); }
 	| i=ID						{ $ast = new StructType($i); }
 	| '[' INT_LITERAL ']' type  { $ast = new ArrayType($INT_LITERAL, $type.ast); }
 	;
