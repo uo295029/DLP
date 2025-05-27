@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ast.expression.*;
-import ast.type.*;
 import codegeneration.mapl.*;
 
 
@@ -35,10 +34,6 @@ public class Value extends AbstractCodeFunction {
 		instruccion.put("!=", "ne");
     }
 
-
-	// class Variable(String name)
-	// phase Identification { VarDefinition varDefinition }
-	// phase TypeChecking { Type type, boolean lvalue }
 	@Override
 	public Object visit(Variable variable, Object param) {
 
@@ -48,8 +43,6 @@ public class Value extends AbstractCodeFunction {
 		return null;
 	}
 
-	// class IntLiteral(String value)
-	// phase TypeChecking { Type type, boolean lvalue }
 	@Override
 	public Object visit(IntLiteral intLiteral, Object param) {
 
@@ -58,8 +51,6 @@ public class Value extends AbstractCodeFunction {
 		return null;
 	}
 
-	// class FloatLiteral(String value)
-	// phase TypeChecking { Type type, boolean lvalue }
 	@Override
 	public Object visit(FloatLiteral floatLiteral, Object param) {
 
@@ -68,8 +59,6 @@ public class Value extends AbstractCodeFunction {
 		return null;
 	}
 
-	// class CharLiteral(String value)
-	// phase TypeChecking { Type type, boolean lvalue }
 	@Override
 	public Object visit(CharLiteral charLiteral, Object param) {
 
@@ -81,8 +70,6 @@ public class Value extends AbstractCodeFunction {
 		return null;
 	}
 
-	// class Arithmetic(Expression left, String operator, Expression right)
-	// phase TypeChecking { Type type, boolean lvalue }
 	@Override
 	public Object visit(Arithmetic arithmetic, Object param) {
 
@@ -93,8 +80,6 @@ public class Value extends AbstractCodeFunction {
 		return null;
 	}
 
-	// class Negate(Expression expression)
-	// phase TypeChecking { Type type, boolean lvalue }
 	@Override
 	public Object visit(Negate negate, Object param) {
 
@@ -104,8 +89,6 @@ public class Value extends AbstractCodeFunction {
 		return null;
 	}
 
-	// class Logic(Expression left, String operator, Expression right)
-	// phase TypeChecking { Type type, boolean lvalue }
 	@Override
 	public Object visit(Logic logic, Object param) {
 
@@ -115,9 +98,7 @@ public class Value extends AbstractCodeFunction {
 
 		return null;
 	}
-
-	// class AttributeAccess(Expression left, String right)
-	// phase TypeChecking { Type type, boolean lvalue }
+	
 	@Override
 	public Object visit(AttributeAccess attributeAccess, Object param) {
 
@@ -127,8 +108,6 @@ public class Value extends AbstractCodeFunction {
 		return null;
 	}
 
-	// class Comparison(Expression left, String operator, Expression right)
-	// phase TypeChecking { Type type, boolean lvalue }
 	@Override
 	public Object visit(Comparison comparison, Object param) {
 
@@ -139,8 +118,6 @@ public class Value extends AbstractCodeFunction {
 		return null;
 	}
 
-	// class ArrayAccess(Expression left, Expression right)
-	// phase TypeChecking { Type type, boolean lvalue }
 	@Override
 	public Object visit(ArrayAccess arrayAccess, Object param) {
 
@@ -150,45 +127,15 @@ public class Value extends AbstractCodeFunction {
 		return null;
 	}
 
-	// class Cast(Type castType, Expression expression)
-	// phase TypeChecking { Type type, boolean lvalue }
 	@Override
 	public Object visit(Cast cast, Object param) {
 
 		value(cast.getExpression());
-		if (cast.getExpression().getType() instanceof IntType) {
-			if (cast.getCastType() instanceof CharType) {
-				out("i2b");
-			}
-			else if (cast.getCastType() instanceof FloatType) {
-				out("i2f");
-			}
-		}
-		else if (cast.getExpression().getType() instanceof CharType) {
-			if (cast.getCastType() instanceof IntType) {
-				out("b2i");
-			}
-			else if (cast.getCastType() instanceof FloatType) {
-				out("b2i");
-				out("i2f");
-			}
-		}
-		else if (cast.getExpression().getType() instanceof FloatType) {
-			if (cast.getCastType() instanceof IntType) {
-				out("f2i");
-			}
-			else if (cast.getCastType() instanceof CharType) {
-				out("f2i");
-				out("i2b");
-			}
-		}
+		convertTo(cast.getExpression().getType(), cast.getType());
 
 		return null;
 	}
 
-	// class FunctionCallE(String name, List<Expression> params)
-	// phase Identification { FunctionDefinition functionDefinition }
-	// phase TypeChecking { Type type, boolean lvalue }
 	@Override
 	public Object visit(FunctionCallE functionCallE, Object param) {
 

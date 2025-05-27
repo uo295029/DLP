@@ -15,9 +15,6 @@ public class Address extends AbstractCodeFunction {
     }
 
 
-	// class Variable(String name)
-	// phase Identification { VarDefinition varDefinition }
-	// phase TypeChecking { Type type, boolean lvalue }
 	@Override
 	public Object visit(Variable variable, Object param) {
 
@@ -32,8 +29,6 @@ public class Address extends AbstractCodeFunction {
 		return null;
 	}
 
-	// class AttributeAccess(Expression left, String right)
-	// phase TypeChecking { Type type, boolean lvalue }
 	@Override
 	public Object visit(AttributeAccess attributeAccess, Object param) {
 
@@ -48,8 +43,6 @@ public class Address extends AbstractCodeFunction {
 		return null;
 	}
 
-	// class ArrayAccess(Expression left, Expression right)
-	// phase TypeChecking { Type type, boolean lvalue }
 	@Override
 	public Object visit(ArrayAccess arrayAccess, Object param) {
 

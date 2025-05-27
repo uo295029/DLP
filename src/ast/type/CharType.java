@@ -38,6 +38,11 @@ public class CharType extends AbstractType  {
     public int getBytes() {
     	return 1;
     }
+    
+    @Override
+    public boolean isSimple() {
+    	return true;
+    }
 
     // %% --------------------------------------
 }

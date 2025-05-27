@@ -33,9 +33,9 @@ public class TypeChecking extends DefaultVisitor {
     public Object visit(FunctionDefinition functionDefinition, Object param) {
 		functionDefinition.getParams().forEach(varDefinition -> varDefinition.accept(this, param));
 		functionDefinition.getType().accept(this, param);
-    	predicate(isSimpleType(functionDefinition.getType()) || functionDefinition.getType() instanceof VoidType, "The return type must be an instance of a primitive type", functionDefinition);
+    	predicate(functionDefinition.getType().isSimple() || functionDefinition.getType() instanceof VoidType, "The return type must be an instance of a primitive type", functionDefinition);
     	for(VarDefinition v : functionDefinition.getParams()) {
-    		predicate(isSimpleType(v.getType()), "The parameters must be an instance of a primitive type", functionDefinition);
+    		predicate(v.getType().isSimple(), "The parameters must be an instance of a primitive type", functionDefinition);
     	}
     	for(Statement s : functionDefinition.getS()) {
     		s.setFunction(functionDefinition);
@@ -44,12 +44,11 @@ public class TypeChecking extends DefaultVisitor {
     	return null;
     }
     
-    // class Assignment(Expression left, Expression right)
     @Override
     public Object visit(Assignment assignment, Object param) {
         super.visit(assignment, param);
         predicate(sameType(assignment.getLeft(), assignment.getRight()), "The expression types don't match", assignment);
-        predicate(isSimpleType(assignment.getLeft().getType()), "The expression on the left must be an instance of a primitive type", assignment);
+        predicate(assignment.getLeft().getType().isSimple(), "The expression on the left must be an instance of a primitive type", assignment);
         predicate(assignment.getLeft().isLvalue(), "The expression on the left is not modifiable", assignment.getLeft());
         return null;
     }
@@ -112,7 +111,7 @@ public class TypeChecking extends DefaultVisitor {
     public Object visit(Print print, Object param) {
     	super.visit(print, param);
     	for(Expression e : print.getExpressions()) {
-    		predicate(isSimpleType(e.getType()), "The expression to print must be an instance of a primitive type", print);
+    		predicate(e.getType().isSimple(), "The expression to print must be an instance of a primitive type", print);
     	}
     	return null;
     }
@@ -121,7 +120,7 @@ public class TypeChecking extends DefaultVisitor {
     public Object visit(Printsp printsp, Object param) {
     	super.visit(printsp, param);
     	for(Expression e : printsp.getExpressions()) {
-    		predicate(isSimpleType(e.getType()), "The expression to print must be an instance of a primitive type", printsp);
+    		predicate(e.getType().isSimple(), "The expression to print must be an instance of a primitive type", printsp);
     	}
     	return null;
     }
@@ -130,7 +129,7 @@ public class TypeChecking extends DefaultVisitor {
     public Object visit(Println println, Object param) {
     	super.visit(println, param);
     	for(Expression e : println.getExpressions()) {
-    		predicate(isSimpleType(e.getType()), "The expression to print must be an instance of a primitive type", println);
+    		predicate(e.getType().isSimple(), "The expression to print must be an instance of a primitive type", println);
     	}
     	return null;
     }
@@ -138,14 +137,11 @@ public class TypeChecking extends DefaultVisitor {
     @Override
     public Object visit(Read read, Object param) {
     	super.visit(read, param);
-    	predicate(isSimpleType(read.getExpression().getType()), "The expression to read must be an instance of a primitive type", read);
+    	predicate(read.getExpression().getType().isSimple(), "The expression to read must be an instance of a primitive type", read);
     	predicate(read.getExpression().isLvalue(), "The expression is not modifiable", read);
     	return null;
     }
     
-    // class Variable(String name)
-    // phase Identification { VarDefinition varDefinition }
-    // phase TypeChecking { Type type, boolean lvalue }
     @Override
     public Object visit(Variable variable, Object param) {
     	super.visit(variable, param);
@@ -154,8 +150,6 @@ public class TypeChecking extends DefaultVisitor {
         return null;
     }
 
-    // class IntLiteral(int intValue)
-    // phase TypeChecking { Type type, boolean lvalue }
     @Override
     public Object visit(IntLiteral intLiteral, Object param) {
         intLiteral.setType(new IntType());
@@ -163,8 +157,6 @@ public class TypeChecking extends DefaultVisitor {
         return null;
     }
 
-    // class FloatLiteral(float floatValue)
-    // phase TypeChecking { Type type, boolean lvalue }
     @Override
     public Object visit(FloatLiteral floatLiteral, Object param) {
         floatLiteral.setType(new FloatType());
@@ -179,8 +171,6 @@ public class TypeChecking extends DefaultVisitor {
         return null;
     }
 
-    // class Arithmetic(Expression left, String operator, Expression right)
-    // phase TypeChecking { Type type, boolean lvalue }
     @Override
     public Object visit(Arithmetic arithmetic, Object param) {
         super.visit(arithmetic, param);
@@ -255,8 +245,8 @@ public class TypeChecking extends DefaultVisitor {
     public Object visit(Cast cast, Object param) {
     	super.visit(cast, param);
     	predicate(cast.getCastType().getClass() != cast.getExpression().getType().getClass(), "The cast type must be different from the expression type", cast);
-    	predicate(isSimpleType(cast.getCastType()), "The cast type must be an instance of a primitive type", cast);
-    	predicate(isSimpleType(cast.getExpression().getType()), "The expression type must be an instance of a primitive type", cast);
+    	predicate(cast.getCastType().isSimple(), "The cast type must be an instance of a primitive type", cast);
+    	predicate(cast.getExpression().getType().isSimple(), "The expression type must be an instance of a primitive type", cast);
     	cast.setType(cast.getCastType());
     	cast.setLvalue(false);
     	return null;
@@ -284,10 +274,6 @@ public class TypeChecking extends DefaultVisitor {
     		if(a.get(i).getType().getClass() != b.get(i).getType().getClass()) return false;
     	}
     	return true;
-    }
-    
-    private boolean isSimpleType(Type t) {
-    	return t instanceof IntType || t instanceof FloatType || t instanceof CharType;
     }
     
     private boolean isArithmetic(Type t) {
