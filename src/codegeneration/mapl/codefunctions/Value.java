@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ast.expression.*;
-import ast.type.*;
 import codegeneration.mapl.*;
 
 
@@ -146,7 +145,6 @@ public class Value extends AbstractCodeFunction {
 
 		value(cast.getExpression());
 		convertTo(cast.getExpression().getType(), cast.getType());
-		
 		return null;
 	}
 

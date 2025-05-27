@@ -38,6 +38,11 @@ public class IntType extends AbstractType  {
     public int getBytes() {
     	return 2;
     }
+    
+    @Override
+    public boolean isSimple() {
+    	return true;
+    }
 
     @Override
     public boolean isValidConversion(Type t) {
