@@ -1,46 +1,86 @@
 #source "input.txt"
 call main
 halt
-#FUNC main
+#FUNC imprime
+#PARAM i:int
 #RET VOID
-#LOCAL j:int
+#LINE 2
+	imprime:
+enter 0
 #LINE 3
-	main:
-enter 2
-#LINE 6
 pusha BP
-pushi -2
+pushi 4
 addi
-pushi 5
-storei
-label1:
-#LINE 8
-pusha 0
-loadi
-pushi 5
-lti
-jz label2
-#LINE 9
-pusha 0
-loadi
-outi
-pushb 10
-outb
-#LINE 8
-pusha 0
-pusha 0
 loadi
 pushi 1
-addi
-storei
-jmp label1
-label2:
-#LINE 12
-pusha BP
-pushi -2
-addi
-loadi
+eqi
+jz label1
+#LINE 5
+pushi 1
 outi
+pushb 32
+outb
+pushb 97
+outb
+pushb 32
+outb
+#LINE 6
 pushb 10
 outb
-ret	0,2,0
+label1:
+pusha BP
+pushi 4
+addi
+loadi
+pushi 2
+eqi
+jz label2
+#LINE 9
+pushi 2
+outi
+pushb 32
+outb
+pushb 98
+outb
+pushb 32
+outb
+#LINE 10
+pushb 10
+outb
+label2:
+pusha BP
+pushi 4
+addi
+loadi
+pushi 3
+eqi
+jz label3
+#LINE 13
+pushi 3
+outi
+pushb 32
+outb
+pushb 99
+outb
+pushb 32
+outb
+#LINE 14
+pushb 10
+outb
+label3:
+ret	0,0,2
+#FUNC main
+#RET VOID
+#LINE 19
+	main:
+enter 0
+#LINE 20
+pushi 1
+call imprime
+#LINE 21
+pushi 3
+call imprime
+#LINE 22
+pushi 2
+call imprime
+ret	0,0,0

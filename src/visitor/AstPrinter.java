@@ -184,6 +184,21 @@ public class AstPrinter implements Visitor {
 	}
 
 	@Override
+	public Object visit(Case caseValue, Object param) {
+
+		int indent = ((Integer)param);
+
+		// Imprimir los hijos (y recorrer si son nodos del AST)
+        printNodeChild(indent + 1, "condition", "Expression", caseValue.getCondition());
+        printListOfNodesChild(indent + 1, "statements", "List<Statement>", caseValue.getStatements());
+
+		// Imprimir el 'toString()' de los atributos (pero no recorrer)
+        printToString(indent + 1, "vgen-attribute-phase-1", "type", "Type", caseValue.getType());
+		printUnknownFields(indent + 1, caseValue, "condition", "statements", "type");
+		return null;
+	}
+
+	@Override
 	public Object visit(Assignment assignment, Object param) {
 
 		int indent = ((Integer)param);
@@ -256,6 +271,21 @@ public class AstPrinter implements Visitor {
 		// Imprimir el 'toString()' de los atributos (pero no recorrer)
         printToString(indent + 1, "vgen-attribute-phase-1", "function", "FunctionDefinition", whileValue.getFunction());
 		printUnknownFields(indent + 1, whileValue, "condition", "yes", "function");
+		return null;
+	}
+
+	@Override
+	public Object visit(Switch switchValue, Object param) {
+
+		int indent = ((Integer)param);
+
+		// Imprimir los hijos (y recorrer si son nodos del AST)
+        printNodeChild(indent + 1, "conditioner", "Expression", switchValue.getConditioner());
+        printListOfNodesChild(indent + 1, "cases", "List<Case>", switchValue.getCases());
+
+		// Imprimir el 'toString()' de los atributos (pero no recorrer)
+        printToString(indent + 1, "vgen-attribute-phase-1", "function", "FunctionDefinition", switchValue.getFunction());
+		printUnknownFields(indent + 1, switchValue, "conditioner", "cases", "function");
 		return null;
 	}
 

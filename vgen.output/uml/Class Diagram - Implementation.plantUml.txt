@@ -96,6 +96,13 @@ class Attribute {
 AbstractAST <|-[#808080]- Attribute
 Attribute o-[#404040,thickness=2]-  Type : type >
 
+class Case {
+}
+AbstractAST <|-[#808080]- Case
+Case o-[#404040,thickness=2]-  Expression : condition >
+Case o-[#404040,thickness=2]- "✱" Statement : statements >
+Case -[#3366cc,thickness=3]-  Type #text:3366cc : type >
+
 class Assignment {
 }
 AbstractStatement <|-[#808080]- Assignment
@@ -126,6 +133,12 @@ class While {
 AbstractStatement <|-[#808080]- While
 While o-[#404040,thickness=2]-  Expression : condition >
 While o-[#404040,thickness=2]- "✱" Statement : yes >
+
+class Switch {
+}
+AbstractStatement <|-[#808080]- Switch
+Switch o-[#404040,thickness=2]-  Expression : conditioner >
+Switch o-[#404040,thickness=2]- "✱" Case : cases >
 
 class Print {
 }

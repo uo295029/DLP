@@ -97,6 +97,28 @@ public class TypeChecking extends DefaultVisitor {
     }
     
     @Override
+    public Object visit(Switch s, Object param) {
+    	s.getConditioner().accept(this, param);
+    	predicate(s.getConditioner().getType().isSimple(), "The conditioner must be an instance of a primitive type", s);
+    	for(Case c : s.getCases()) {
+    		c.setType(s.getConditioner().getType());
+    		for(Statement cs : c.getStatements()) {
+    			cs.setFunction(s.getFunction());
+    		}
+    	}
+    	super.visit(s, param);
+    	return null;
+    }
+    
+    @Override
+    public Object visit(Case c, Object param) {
+    	c.getCondition().accept(this, param);
+    	predicate(c.getCondition().getType().getClass() == c.getType().getClass(), "The expression type must be the same as the switch conditioner", c);
+    	super.visit(c, param);
+    	return null;
+    }
+    
+    @Override
     public Object visit(Print print, Object param) {
     	super.visit(print, param);
     	for(Expression e : print.getExpressions()) {

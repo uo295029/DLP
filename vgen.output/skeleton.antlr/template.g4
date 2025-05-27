@@ -39,6 +39,7 @@ statement returns[Statement ast]
     | expression?                         { $ast = new Return(($expression.ctx == null) ? null : $expression.ast); }
     | expression yes+=statement* no+=statement* { $ast = new If($expression.ast, $yes, $no); }         
     | expression yes+=statement*          { $ast = new While($expression.ast, $yes); }           
+    | expression cases+=case*             { $ast = new Switch($expression.ast, $cases); }        
     | expressions+=expression*            { $ast = new Print($expressions); }                    
     | expressions+=expression*            { $ast = new Printsp($expressions); }                  
     | expressions+=expression*            { $ast = new Println($expressions); }                  
@@ -58,6 +59,10 @@ expression returns[Expression ast]
     | left=expression right=expression    { $ast = new ArrayAccess($left.ast, $right.ast); }     
     | type expression                     { $ast = new Cast($type.ast, $expression.ast); }       
     | name=IDENT params+=expression*      { $ast = new FunctionCallE($name, $params); }          
+	;
+
+case returns[Case ast]
+    : expression statements+=statement*   { $ast = new Case($expression.ast, $statements); }     
 	;
 
 attribute returns[Attribute ast]
