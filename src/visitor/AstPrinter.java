@@ -260,6 +260,21 @@ public class AstPrinter implements Visitor {
 	}
 
 	@Override
+	public Object visit(DoWhile doWhile, Object param) {
+
+		int indent = ((Integer)param);
+
+		// Imprimir los hijos (y recorrer si son nodos del AST)
+        printListOfNodesChild(indent + 1, "yes", "List<Statement>", doWhile.getYes());
+        printNodeChild(indent + 1, "condition", "Expression", doWhile.getCondition());
+
+		// Imprimir el 'toString()' de los atributos (pero no recorrer)
+        printToString(indent + 1, "vgen-attribute-phase-1", "function", "FunctionDefinition", doWhile.getFunction());
+		printUnknownFields(indent + 1, doWhile, "yes", "condition", "function");
+		return null;
+	}
+
+	@Override
 	public Object visit(Print print, Object param) {
 
 		int indent = ((Integer)param);

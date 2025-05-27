@@ -103,6 +103,14 @@ public class DefaultVisitor implements Visitor {
 	}
 
 	@Override
+	public Object visit(DoWhile doWhile, Object param) {
+
+		doWhile.getYes().forEach(statement -> statement.accept(this, param));
+		doWhile.getCondition().accept(this, param);
+		return null;
+	}
+
+	@Override
 	public Object visit(Print print, Object param) {
 
 		print.getExpressions().forEach(expression -> expression.accept(this, param));

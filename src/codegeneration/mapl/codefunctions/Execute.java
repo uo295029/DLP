@@ -117,6 +117,21 @@ public class Execute extends AbstractCodeFunction {
 
 		return null;
 	}
+	
+	@Override
+	public Object visit(DoWhile doWhile, Object param) {
+
+		String condition = "label" + getLabel();
+		out(condition + ":");
+		out("#LINE " + doWhile.getCondition().end().getLine());
+		for (Statement statement : doWhile.getYes()) {
+			execute(statement);
+		}
+		value(doWhile.getCondition());
+		out("jnz " + condition);
+
+		return null;
+	}
 
 	@Override
 	public Object visit(Print print, Object param) {

@@ -36,6 +36,8 @@ public interface Visitor {
 
 	public Object visit(While whileValue, Object param);
 
+	public Object visit(DoWhile doWhile, Object param);
+
 	public Object visit(Print print, Object param);
 
 	public Object visit(Printsp printsp, Object param);

@@ -39,6 +39,7 @@ statement returns[Statement ast]
     | expression?                         { $ast = new Return(($expression.ctx == null) ? null : $expression.ast); }
     | expression yes+=statement* no+=statement* { $ast = new If($expression.ast, $yes, $no); }         
     | expression yes+=statement*          { $ast = new While($expression.ast, $yes); }           
+    | yes+=statement* expression          { $ast = new DoWhile($yes, $expression.ast); }         
     | expressions+=expression*            { $ast = new Print($expressions); }                    
     | expressions+=expression*            { $ast = new Printsp($expressions); }                  
     | expressions+=expression*            { $ast = new Println($expressions); }                  

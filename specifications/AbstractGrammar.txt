@@ -20,6 +20,7 @@ functionCallS:statement -> name:string params:expression*;
 return:statement -> expression?;
 if:statement -> condition:expression yes:statement* no:statement*;
 while:statement -> condition:expression yes:statement*;
+doWhile:statement -> yes:statement* condition:expression;
 print:statement -> expression*;
 printsp:statement -> expression*;
 println:statement -> expression*;

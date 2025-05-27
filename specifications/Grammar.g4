@@ -47,6 +47,7 @@ statement returns[Statement ast]
 	| e1=expression '=' e2=expression';'											{ $ast = new Assignment($e1.ast, $e2.ast); }
 	| 'if' '('expression')' '{' s1+=statement* '}' ('else' '{' s2+=statement* '}')?	{ $ast = new If($expression.ast, $s1, $s2); }
 	| 'while' '('expression')' '{' s+=statement* '}'								{ $ast = new While($expression.ast, $s); }
+	| 'do' '{' s+=statement* '}' 'while' '(' expression ')'	';'						{ $ast = new DoWhile($s, $expression.ast); }
 	;
 	
 expression returns[Expression ast]

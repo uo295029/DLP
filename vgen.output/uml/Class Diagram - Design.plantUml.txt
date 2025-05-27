@@ -113,6 +113,12 @@ Statement <|-[#808080]- While
 While o-[#404040,thickness=2]-  Expression : condition >
 While o-[#404040,thickness=2]- "✱" Statement : yes >
 
+class DoWhile {
+}
+Statement <|-[#808080]- DoWhile
+DoWhile o-[#404040,thickness=2]- "✱" Statement : yes >
+DoWhile o-[#404040,thickness=2]-  Expression : condition >
+
 class Print {
 }
 Statement <|-[#808080]- Print
