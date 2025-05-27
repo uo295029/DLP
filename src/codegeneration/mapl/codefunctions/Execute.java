@@ -39,6 +39,7 @@ public class Execute extends AbstractCodeFunction {
 		out("#LINE " + assignment.end().getLine());
 		address(assignment.getLeft());
 		value(assignment.getRight());
+		convertTo(assignment.getRight().getType(), assignment.getLeft().getType());
 		out("store" + getSuffix(assignment.getLeft().getType()));
 		
 		return null;
@@ -48,9 +49,12 @@ public class Execute extends AbstractCodeFunction {
 	public Object visit(FunctionCallS functionCallS, Object param) {
 
 		out("#LINE " + functionCallS.end().getLine());
-		for (Expression expression: functionCallS.getParams()) {
-			value(expression);
+		
+		for(int i = 0; i < functionCallS.getParams().size(); i++) {
+			value(functionCallS.getParams().get(i));
+			convertTo(functionCallS.getParams().get(i).getType(), functionCallS.getFunctionDefinition().getParams().get(i).getType());
 		}
+		
 		out("call " + functionCallS.getName());
 		if (!(functionCallS.getFunctionDefinition().getType() instanceof VoidType)) {
 			out("pop" + getSuffix(functionCallS.getFunctionDefinition().getType()));
@@ -70,7 +74,8 @@ public class Execute extends AbstractCodeFunction {
 		}
 		if (exp != null) {
 			value(exp);
-			bytes = exp.getType().getBytes();
+			convertTo(exp.getType(), returnValue.getFunction().getType());
+			bytes = returnValue.getFunction().getType().getBytes();
 		}
 		out("ret\t" + bytes + "," +
 				returnValue.getFunction().getVarsSize() + "," +

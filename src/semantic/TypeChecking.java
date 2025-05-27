@@ -47,7 +47,7 @@ public class TypeChecking extends DefaultVisitor {
     @Override
     public Object visit(Assignment assignment, Object param) {
         super.visit(assignment, param);
-        predicate(sameType(assignment.getLeft(), assignment.getRight()), "The expression types don't match", assignment);
+        predicate(assignment.getRight().getType().isValidConversion(assignment.getLeft().getType()), "The expression type can not be converted", assignment);
         predicate(assignment.getLeft().getType().isSimple(), "The expression on the left must be an instance of a primitive type", assignment);
         predicate(assignment.getLeft().isLvalue(), "The expression on the left is not modifiable", assignment.getLeft());
         return null;
@@ -57,7 +57,7 @@ public class TypeChecking extends DefaultVisitor {
     public Object visit(FunctionCallS functionCallS, Object param) {
     	super.visit(functionCallS, param);
     	if(predicate(functionCallS.getParams().size() == functionCallS.getFunctionDefinition().getParams().size(), "The number of params is invalid", functionCallS))
-    		predicate(sameTypeList(functionCallS.getParams(), functionCallS.getFunctionDefinition().getParams()), "The params types do not match", functionCallS);
+    		predicate(validParams(functionCallS.getParams(), functionCallS.getFunctionDefinition().getParams()), "The params types can not be converted", functionCallS);
     	return null;
     }
     
@@ -67,14 +67,14 @@ public class TypeChecking extends DefaultVisitor {
     	if(r.getExpression().isEmpty()) 
     		predicate(r.getFunction().getType() instanceof VoidType, "The return of the function " + r.getFunction().getName() + " can not be void", r);
     	else 
-    		predicate(r.getFunction().getType().getClass() == r.getExpression().get().getType().getClass(), "The type of the function " + r.getFunction().getName() + " does not match the return type", r);
+    		predicate(r.getExpression().get().getType().isValidConversion(r.getFunction().getType()), "The type of the function " + r.getFunction().getName() + " does not match the return type", r);
     	return null;
     }
     
     @Override
     public Object visit(If i, Object param) {
     	i.getCondition().accept(this, param);
-    	predicate(i.getCondition().getType() instanceof IntType, "The condition must be an integer", i);
+    	predicate(i.getCondition().getType().isValidConversion(new IntType()), "The condition type is not valid", i);
     	for(Statement s : i.getYes()) {
     		s.setFunction(i.getFunction());
     	}
@@ -88,7 +88,7 @@ public class TypeChecking extends DefaultVisitor {
     @Override
     public Object visit(While w, Object param) {
     	w.getCondition().accept(this, param);
-    	predicate(w.getCondition().getType() instanceof IntType, "The condition must be an integer", w);
+    	predicate(w.getCondition().getType().isValidConversion(new IntType()), "The condition type is not valid", w);
     	for(Statement s : w.getYes()) {
     		s.setFunction(w.getFunction());
     	}
@@ -163,10 +163,10 @@ public class TypeChecking extends DefaultVisitor {
     @Override
     public Object visit(Arithmetic arithmetic, Object param) {
         super.visit(arithmetic, param);
-        predicate(sameType(arithmetic.getLeft(), arithmetic.getRight()), "The expression types don't match", arithmetic);
-        predicate(isArithmetic(arithmetic.getLeft().getType()), "The expression can not be in an arithmetic operation", arithmetic);
-        if(arithmetic.getOperator().equals("%")) predicate(arithmetic.getLeft().getType() instanceof IntType, "Both expressions must be integers", arithmetic);
-        arithmetic.setType(arithmetic.getLeft().getType());
+        predicate(arithmetic.getLeft().getType().isSimple(), "The type of the expression on the left must be a simple (int, char, double)", arithmetic);
+        predicate(arithmetic.getRight().getType().isSimple(), "The type of the expression on the right must be a simple (int, char, double)", arithmetic);
+        if(arithmetic.getOperator().equals("%")) predicate(arithmetic.getLeft().getType() instanceof IntType && arithmetic.getRight().getType() instanceof IntType, "Both expressions must be integers", arithmetic);
+        arithmetic.setType(arithmetic.getLeft().getType().arithmetic(arithmetic.getRight().getType()));
         arithmetic.setLvalue(false);
         return null;
     }
@@ -174,7 +174,7 @@ public class TypeChecking extends DefaultVisitor {
     @Override
     public Object visit(Negate negate, Object param) {
     	super.visit(negate, param);
-    	predicate(negate.getExpression().getType() instanceof IntType, "The expression must be an integer, " + negate.getExpression().getType().toString(), negate);
+    	predicate(negate.getExpression().getType().isValidConversion(new IntType()), "The expression type can not be converted to Int", negate);
     	negate.setType(negate.getExpression().getType());
     	negate.setLvalue(false);
     	return null;
@@ -211,9 +211,8 @@ public class TypeChecking extends DefaultVisitor {
     @Override
     public Object visit(Comparison comparison, Object param) {
     	super.visit(comparison, param);
-        predicate(sameType(comparison.getLeft(), comparison.getRight()), "The expression types don't match", comparison);
-    	predicate(isArithmetic(comparison.getLeft().getType()), "The expression on the left can not be in an arithmetic operation", comparison);
-    	predicate(isArithmetic(comparison.getRight().getType()), "The expression on the right can not be in an arithmetic operation", comparison);
+    	predicate(comparison.getLeft().getType().isSimple(), "The expression on the left must be an instance of a primitive type", comparison);
+    	predicate(comparison.getRight().getType().isSimple(), "The expression on the right must be an instance of a primitive type", comparison);
     	comparison.setType(new IntType());
     	comparison.setLvalue(false);
     	return null;
@@ -222,7 +221,7 @@ public class TypeChecking extends DefaultVisitor {
     @Override
     public Object visit(ArrayAccess arrayAccess, Object param) {
     	super.visit(arrayAccess, param);
-    	predicate(arrayAccess.getRight().getType() instanceof IntType, "The expression between the brackets must be an integer", arrayAccess);
+    	predicate(arrayAccess.getRight().getType().isValidConversion(new IntType()), "The expression between the brackets must be an integer", arrayAccess);
     	if(predicate(arrayAccess.getLeft().getType() instanceof ArrayType, "The expression on the left must be an array", arrayAccess)) {
     		arrayAccess.setLvalue(true);
     		arrayAccess.setType(((ArrayType) arrayAccess.getLeft().getType()).getType());
@@ -245,7 +244,7 @@ public class TypeChecking extends DefaultVisitor {
     public Object visit(FunctionCallE functionCallE, Object param) {
     	super.visit(functionCallE, param);
     	if(predicate(functionCallE.getParams().size() == functionCallE.getFunctionDefinition().getParams().size(), "The number of params is invalid", functionCallE))
-    		predicate(sameTypeList(functionCallE.getParams(), functionCallE.getFunctionDefinition().getParams()), "The params types do not match", functionCallE);
+    		predicate(validParams(functionCallE.getParams(), functionCallE.getFunctionDefinition().getParams()), "The params types do not match", functionCallE);
     	predicate(!(functionCallE.getFunctionDefinition().getType() instanceof VoidType), "The function return type can not be void: ", functionCallE);
     	functionCallE.setType(functionCallE.getFunctionDefinition().getType());
     	functionCallE.setLvalue(false);
@@ -253,20 +252,12 @@ public class TypeChecking extends DefaultVisitor {
     }
     //# ----------------------------------------------------------
     //# Auxiliary methods (optional)
-
-    private boolean sameType(Expression a, Expression b) {
-        return (a.getType().getClass() == b.getType().getClass());
-    }
     
-    private boolean sameTypeList(List<Expression> a, List<VarDefinition> b) {
+    private boolean validParams(List<Expression> a, List<VarDefinition> b) {
     	for(int i = 0; i < a.size(); i++) {
-    		if(a.get(i).getType().getClass() != b.get(i).getType().getClass()) return false;
+    		if(!a.get(i).getType().isValidConversion(b.get(i).getType())) return false;
     	}
     	return true;
-    }
-    
-    private boolean isArithmetic(Type t) {
-    	return t instanceof IntType || t instanceof FloatType;
     }
 
     private void notifyError(String errorMessage, Position position) {

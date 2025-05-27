@@ -22,7 +22,11 @@ public interface Type extends AST {
 
 	public int getBytes();
 	
+	public boolean isValidConversion(Type t);
+	
 	public boolean isSimple();
+	
+	public Type arithmetic(Type t);
 	
     // %% --------------------------------------
 }

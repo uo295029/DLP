@@ -40,8 +40,18 @@ public class FloatType extends AbstractType  {
     }
     
     @Override
+    public boolean isValidConversion(Type t) {
+    	return t instanceof FloatType;
+    }
+
+    @Override
     public boolean isSimple() {
     	return true;
+    }
+    
+    @Override
+    public Type arithmetic(Type t) {
+    	return new FloatType();
     }
 
     // %% --------------------------------------

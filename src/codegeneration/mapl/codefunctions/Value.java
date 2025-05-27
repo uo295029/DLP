@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ast.expression.*;
+import ast.type.*;
 import codegeneration.mapl.*;
 
 
@@ -74,7 +75,9 @@ public class Value extends AbstractCodeFunction {
 	public Object visit(Arithmetic arithmetic, Object param) {
 
 		value(arithmetic.getLeft());
+		convertTo(arithmetic.getLeft().getType(), arithmetic.getType());
 		value(arithmetic.getRight());
+		convertTo(arithmetic.getRight().getType(), arithmetic.getType());
 		out(instruccion.get(arithmetic.getOperator()) + getSuffix(arithmetic.getType()));
 
 		return null;
@@ -84,6 +87,7 @@ public class Value extends AbstractCodeFunction {
 	public Object visit(Negate negate, Object param) {
 
 		value(negate.getExpression());
+		convertTo(negate.getExpression().getType(), new IntType());
 		out("not");
 
 		return null;
@@ -91,9 +95,11 @@ public class Value extends AbstractCodeFunction {
 
 	@Override
 	public Object visit(Logic logic, Object param) {
-
+		
 		value(logic.getLeft());
+		
 		value(logic.getRight());
+		
 		out(instruccion.get(logic.getOperator()));
 
 		return null;
@@ -111,9 +117,17 @@ public class Value extends AbstractCodeFunction {
 	@Override
 	public Object visit(Comparison comparison, Object param) {
 
+		boolean isFloat = comparison.getLeft().getType() instanceof FloatType || comparison.getRight().getType() instanceof FloatType;
+		
 		value(comparison.getLeft());
+		if(isFloat) convertTo(comparison.getLeft().getType(), new FloatType());
+		else convertTo(comparison.getLeft().getType(), new IntType());
+		
 		value(comparison.getRight());
-		out(instruccion.get(comparison.getOperator()) + getSuffix(comparison.getLeft().getType()));
+		if(isFloat) convertTo(comparison.getRight().getType(), new FloatType());
+		else convertTo(comparison.getRight().getType(), new IntType());
+		
+		out(instruccion.get(comparison.getOperator()) + getSuffix(isFloat ? new FloatType() : new IntType()));
 
 		return null;
 	}
@@ -132,15 +146,15 @@ public class Value extends AbstractCodeFunction {
 
 		value(cast.getExpression());
 		convertTo(cast.getExpression().getType(), cast.getType());
-
 		return null;
 	}
 
 	@Override
 	public Object visit(FunctionCallE functionCallE, Object param) {
 
-		for (Expression expression:functionCallE.getParams()) {
-			value(expression);
+		for(int i = 0; i < functionCallE.getParams().size(); i++) {
+			value(functionCallE.getParams().get(i));
+			convertTo(functionCallE.getParams().get(i).getType(), functionCallE.getFunctionDefinition().getParams().get(i).getType());
 		}
 		out("call " + functionCallE.getName());
 
