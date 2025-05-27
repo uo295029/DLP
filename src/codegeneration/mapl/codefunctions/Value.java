@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ast.expression.*;
+import ast.type.*;
 import codegeneration.mapl.*;
 
 
