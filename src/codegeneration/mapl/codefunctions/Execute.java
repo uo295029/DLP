@@ -117,6 +117,27 @@ public class Execute extends AbstractCodeFunction {
 
 		return null;
 	}
+	
+	// class For(VarDefinition varDefinition, Expression condition, Statement increment, List<Statement> statements)
+	// phase TypeChecking { FunctionDefinition function }
+	@Override
+	public Object visit(For f, Object param) {
+
+		String condition = "label" + getLabel();
+		String end = "label" + getLabel();
+		out(condition + ":");
+		out("#LINE " + f.getCondition().end().getLine());
+		value(f.getCondition());
+		out("jz " + end);
+		for (Statement statement : f.getStatements()) {
+			execute(statement);
+		}
+		execute(f.getIncrement());
+		out("jmp " + condition);
+		out(end + ":");
+
+		return null;
+	}
 
 	@Override
 	public Object visit(Print print, Object param) {
