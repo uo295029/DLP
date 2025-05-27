@@ -53,6 +53,12 @@ public class ExceptionThrowerVisitor implements Visitor {
 	}
 
 	@Override
+	public Object visit(Case caseValue, Object param) {
+
+        throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(Case)' has been invoked but it has not been implemented.");
+	}
+
+	@Override
 	public Object visit(Assignment assignment, Object param) {
 
         throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(Assignment)' has been invoked but it has not been implemented.");
@@ -80,6 +86,12 @@ public class ExceptionThrowerVisitor implements Visitor {
 	public Object visit(While whileValue, Object param) {
 
         throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(While)' has been invoked but it has not been implemented.");
+	}
+
+	@Override
+	public Object visit(Switch switchValue, Object param) {
+
+        throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(Switch)' has been invoked but it has not been implemented.");
 	}
 
 	@Override

@@ -88,6 +88,19 @@ public class Execute extends AbstractCodeFunction {
 		return null;
 	}
 
+	// class Switch(Expression conditioner, List<Case> cases)
+	// phase TypeChecking { FunctionDefinition function }
+	@Override
+	public Object visit(Switch switchValue, Object param) {
+
+		// value(switchValue.getConditioner());
+		// address(switchValue.getConditioner());
+
+		out("<instruction>");
+
+		return null;
+	}
+
 	// class Print(List<Expression> expressions)
 	// phase TypeChecking { FunctionDefinition function }
 	@Override

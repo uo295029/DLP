@@ -26,6 +26,8 @@ public interface Visitor {
 
 	public Object visit(Attribute attribute, Object param);
 
+	public Object visit(Case caseValue, Object param);
+
 	public Object visit(Assignment assignment, Object param);
 
 	public Object visit(FunctionCallS functionCallS, Object param);
@@ -35,6 +37,8 @@ public interface Visitor {
 	public Object visit(If ifValue, Object param);
 
 	public Object visit(While whileValue, Object param);
+
+	public Object visit(Switch switchValue, Object param);
 
 	public Object visit(Print print, Object param);
 

@@ -64,6 +64,14 @@ public class DefaultVisitor implements Visitor {
 	}
 
 	@Override
+	public Object visit(Case caseValue, Object param) {
+
+		caseValue.getCondition().accept(this, param);
+		caseValue.getStatements().forEach(statement -> statement.accept(this, param));
+		return null;
+	}
+
+	@Override
 	public Object visit(Assignment assignment, Object param) {
 
 		assignment.getLeft().accept(this, param);
@@ -99,6 +107,14 @@ public class DefaultVisitor implements Visitor {
 
 		whileValue.getCondition().accept(this, param);
 		whileValue.getYes().forEach(statement -> statement.accept(this, param));
+		return null;
+	}
+
+	@Override
+	public Object visit(Switch switchValue, Object param) {
+
+		switchValue.getConditioner().accept(this, param);
+		switchValue.getCases().forEach(caseValue -> caseValue.accept(this, param));
 		return null;
 	}
 

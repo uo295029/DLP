@@ -2,6 +2,7 @@
 
 package codegeneration.mapl.codefunctions;
 
+import ast.Case;
 import ast.definition.FunctionDefinition;
 import ast.expression.Expression;
 import ast.statement.*;
@@ -114,6 +115,27 @@ public class Execute extends AbstractCodeFunction {
 		}
 		out("jmp " + condition);
 		out(end + ":");
+
+		return null;
+	}
+	
+	@Override
+	public Object visit(Switch switchValue, Object param) {
+
+		String end = "label" + getLabel();
+		out("#LINE " + switchValue.getConditioner().end().getLine());
+		for (Case c : switchValue.getCases()) {
+			value(switchValue.getConditioner());
+			value(c.getCondition());
+			if(switchValue.getConditioner().getType() instanceof FloatType) out("eqf");
+			else out("eqi");
+			out("jz " + end);
+			for(Statement statement : c.getStatements()) {
+				execute(statement);
+			}
+			out(end + ":");
+			end = "label" + getLabel();
+		}
 
 		return null;
 	}

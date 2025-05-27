@@ -129,6 +129,20 @@ public class TypeChecking extends DefaultVisitor {
 		return null;
 	}
 
+	// class Case(Expression condition, List<Statement> statements)
+	// phase TypeChecking { Type type }
+	@Override
+	public Object visit(Case caseValue, Object param) {
+
+		// caseValue.getCondition().accept(this, param);
+		// caseValue.getStatements().forEach(statement -> statement.accept(this, param));
+		super.visit(caseValue, param);
+
+		// TODO: Remember to initialize SYNTHESIZED attributes <-----
+		// caseValue.setType(?);
+		return null;
+	}
+
 	// class Assignment(Expression left, Expression right)
 	// phase TypeChecking { FunctionDefinition function }
 	@Override
@@ -196,6 +210,20 @@ public class TypeChecking extends DefaultVisitor {
 
 		// TODO: Remember to initialize SYNTHESIZED attributes <-----
 		// whileValue.setFunction(?);
+		return null;
+	}
+
+	// class Switch(Expression conditioner, List<Case> cases)
+	// phase TypeChecking { FunctionDefinition function }
+	@Override
+	public Object visit(Switch switchValue, Object param) {
+
+		// switchValue.getConditioner().accept(this, param);
+		// switchValue.getCases().forEach(caseValue -> caseValue.accept(this, param));
+		super.visit(switchValue, param);
+
+		// TODO: Remember to initialize SYNTHESIZED attributes <-----
+		// switchValue.setFunction(?);
 		return null;
 	}
 

@@ -129,6 +129,17 @@ public class Identification extends DefaultVisitor {
 		return null;
 	}
 
+	// class Case(Expression condition, List<Statement> statements)
+	@Override
+	public Object visit(Case caseValue, Object param) {
+
+		// caseValue.getCondition().accept(this, param);
+		// caseValue.getStatements().forEach(statement -> statement.accept(this, param));
+		super.visit(caseValue, param);
+
+		return null;
+	}
+
 	// class Assignment(Expression left, Expression right)
 	@Override
 	public Object visit(Assignment assignment, Object param) {
@@ -182,6 +193,17 @@ public class Identification extends DefaultVisitor {
 		// whileValue.getCondition().accept(this, param);
 		// whileValue.getYes().forEach(statement -> statement.accept(this, param));
 		super.visit(whileValue, param);
+
+		return null;
+	}
+
+	// class Switch(Expression conditioner, List<Case> cases)
+	@Override
+	public Object visit(Switch switchValue, Object param) {
+
+		// switchValue.getConditioner().accept(this, param);
+		// switchValue.getCases().forEach(caseValue -> caseValue.accept(this, param));
+		super.visit(switchValue, param);
 
 		return null;
 	}
