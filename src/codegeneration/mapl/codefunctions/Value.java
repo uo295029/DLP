@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ast.expression.*;
-import ast.type.*;
 import codegeneration.mapl.*;
 
 
@@ -132,32 +131,7 @@ public class Value extends AbstractCodeFunction {
 	public Object visit(Cast cast, Object param) {
 
 		value(cast.getExpression());
-		if (cast.getExpression().getType() instanceof IntType) {
-			if (cast.getCastType() instanceof CharType) {
-				out("i2b");
-			}
-			else if (cast.getCastType() instanceof FloatType) {
-				out("i2f");
-			}
-		}
-		else if (cast.getExpression().getType() instanceof CharType) {
-			if (cast.getCastType() instanceof IntType) {
-				out("b2i");
-			}
-			else if (cast.getCastType() instanceof FloatType) {
-				out("b2i");
-				out("i2f");
-			}
-		}
-		else if (cast.getExpression().getType() instanceof FloatType) {
-			if (cast.getCastType() instanceof IntType) {
-				out("f2i");
-			}
-			else if (cast.getCastType() instanceof CharType) {
-				out("f2i");
-				out("i2b");
-			}
-		}
+		convertTo(cast.getExpression().getType(), cast.getType());
 
 		return null;
 	}

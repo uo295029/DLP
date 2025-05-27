@@ -38,6 +38,11 @@ public class FloatType extends AbstractType  {
     public int getBytes() {
     	return 4;
     }
+    
+    @Override
+    public boolean isSimple() {
+    	return true;
+    }
 
     // %% --------------------------------------
 }
