@@ -21,6 +21,8 @@ public class Identification extends DefaultVisitor {
     private ContextMap<VarDefinition> variables = new ContextMap<VarDefinition>();
     private Map<String, FunctionDefinition> functions = new HashMap<String, FunctionDefinition>();
     private Map<String, StructDefinition> structs = new HashMap<String, StructDefinition>();
+    
+    private String[] reservedNames = {"true", "false"};
 
     public Identification(ErrorManager errorManager) {
         this.errorManager = errorManager;
@@ -34,14 +36,18 @@ public class Identification extends DefaultVisitor {
     
     @Override
     public Object visit(VarDefinition varDefinition, Object param) {
-    	if (varDefinition.getScope() != 1 && varDefinition.getScope() != 2) 
-    		varDefinition.setScope(0); // Scope 0 es para variables globales
-        var definition = variables.getFromTop(varDefinition.getName());
-        if (definition != null) 
-        	notifyError("Variable already defined: " + varDefinition.getName(), varDefinition);
-        else 
-        	variables.put(varDefinition.getName(), varDefinition);
-        varDefinition.getType().accept(this, param);
+    	if(isReserved(varDefinition.getName())) {
+    		notifyError("Variable name invalid, it is a reserved name", varDefinition);
+    	} else {
+	    	if (varDefinition.getScope() != 1 && varDefinition.getScope() != 2) 
+	    		varDefinition.setScope(0); // Scope 0 es para variables globales
+	        var definition = variables.getFromTop(varDefinition.getName());
+	        if (definition != null) 
+	        	notifyError("Variable already defined: " + varDefinition.getName(), varDefinition);
+	        else 
+	        	variables.put(varDefinition.getName(), varDefinition);
+	        varDefinition.getType().accept(this, param);
+    	}
         return null;
     }
 
@@ -132,6 +138,13 @@ public class Identification extends DefaultVisitor {
     // # --------------------------------------------------------
     // Métodos auxiliares recomendados (opcionales) -------------
 
+ 	private boolean isReserved(String name) {
+ 		for(String reserved : reservedNames) {
+ 			if(reserved.equals(name)) return true;
+ 		}
+ 		return false;
+ 	}
+ 	
     private void notifyError(String msg, Position position) {
         errorManager.notify("Identification", msg, position);
     }

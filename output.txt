@@ -1,46 +1,67 @@
 #source "input.txt"
 call main
 halt
+#FUNC esMayorQue5
+#PARAM a:int
+#RET int
+#LINE 2
+	esMayorQue5:
+enter 0
+#LINE 3
+pusha BP
+pushi 4
+addi
+loadi
+pushi 5
+gti
+ret	2,0,2
 #FUNC main
 #RET VOID
+#LOCAL i:int
 #LOCAL j:int
-#LINE 3
-	main:
-enter 2
 #LINE 6
+	main:
+enter 4
+#LINE 10
 pusha BP
 pushi -2
 addi
-pushi 5
+pushi 6
 storei
+#LINE 11
+pusha BP
+pushi -4
+addi
+pushi 4
+storei
+#LINE 13
+pusha BP
+pushi -2
+addi
+loadi
+call esMayorQue5
+jz label1
+#LINE 14
+pushb 105
+outb
+pushb 10
+outb
+jmp label2
 label1:
-#LINE 8
-pusha 0
-loadi
-pushi 5
-lti
-jz label2
-#LINE 9
-pusha 0
-loadi
-outi
-pushb 10
-outb
-#LINE 8
-pusha 0
-pusha 0
-loadi
-pushi 1
-addi
-storei
-jmp label1
 label2:
-#LINE 12
+#LINE 17
 pusha BP
-pushi -2
+pushi -4
 addi
 loadi
-outi
+call esMayorQue5
+jz label3
+#LINE 18
+pushb 106
+outb
 pushb 10
 outb
-ret	0,2,0
+jmp label4
+label3:
+label4:
+ret	0,4,0

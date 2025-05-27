@@ -9,6 +9,9 @@ FLOAT_LITERAL: [0-9]+'.'[0-9]+;
 CHAR_LITERAL: '\'' ~[\n\r] '\''
 	| '\'' '\\n' '\'';
 
+BOOL_LITERAL: 'true'
+	| 'false';
+
 LINE_COMMENT: '//' .*? ('\n' | EOF) -> skip;
 
 MULTILINE_COMMENT: '/*' .*? '*/' -> skip;

@@ -155,6 +155,12 @@ public class DefaultVisitor implements Visitor {
 	}
 
 	@Override
+	public Object visit(BoolLiteral boolLiteral, Object param) {
+
+		return null;
+	}
+
+	@Override
 	public Object visit(Arithmetic arithmetic, Object param) {
 
 		arithmetic.getLeft().accept(this, param);
@@ -229,6 +235,12 @@ public class DefaultVisitor implements Visitor {
 
 	@Override
 	public Object visit(CharType charType, Object param) {
+
+		return null;
+	}
+
+	@Override
+	public Object visit(BoolType boolType, Object param) {
 
 		return null;
 	}

@@ -74,7 +74,7 @@ public class TypeChecking extends DefaultVisitor {
     @Override
     public Object visit(If i, Object param) {
     	i.getCondition().accept(this, param);
-    	predicate(i.getCondition().getType() instanceof IntType, "The condition must be an integer", i);
+    	predicate(isLogic(i.getCondition().getType()), "The condition must be an integer or boolean", i);
     	for(Statement s : i.getYes()) {
     		s.setFunction(i.getFunction());
     	}
@@ -88,7 +88,7 @@ public class TypeChecking extends DefaultVisitor {
     @Override
     public Object visit(While w, Object param) {
     	w.getCondition().accept(this, param);
-    	predicate(w.getCondition().getType() instanceof IntType, "The condition must be an integer", w);
+    	predicate(isLogic(w.getCondition().getType()), "The condition must be an integer or boolean", w);
     	for(Statement s : w.getYes()) {
     		s.setFunction(w.getFunction());
     	}
@@ -159,6 +159,13 @@ public class TypeChecking extends DefaultVisitor {
         charLiteral.setLvalue(false);
         return null;
     }
+    
+    @Override
+    public Object visit(BoolLiteral boolLiteral, Object param) {
+        boolLiteral.setType(new CharType());
+        boolLiteral.setLvalue(false);
+        return null;
+    }
 
     @Override
     public Object visit(Arithmetic arithmetic, Object param) {
@@ -174,7 +181,7 @@ public class TypeChecking extends DefaultVisitor {
     @Override
     public Object visit(Negate negate, Object param) {
     	super.visit(negate, param);
-    	predicate(negate.getExpression().getType() instanceof IntType, "The expression must be an integer, " + negate.getExpression().getType().toString(), negate);
+    	predicate(isLogic(negate.getExpression().getType()), "The expression must be an integer or boolean, " + negate.getExpression().getType().toString(), negate);
     	negate.setType(negate.getExpression().getType());
     	negate.setLvalue(false);
     	return null;
@@ -183,8 +190,8 @@ public class TypeChecking extends DefaultVisitor {
     @Override
     public Object visit(Logic logic, Object param) {
     	super.visit(logic, param);
-    	predicate(logic.getLeft().getType() instanceof IntType, "The left expression must be an integer", logic);
-    	predicate(logic.getRight().getType() instanceof IntType, "The right expression must be an integer", logic);
+    	predicate(isLogic(logic.getLeft().getType()), "The left expression must be an integer or boolean", logic);
+    	predicate(isLogic(logic.getRight().getType()), "The right expression must be an integer or boolean", logic);
     	logic.setType(new IntType());
     	logic.setLvalue(false);
     	return null;
@@ -214,7 +221,7 @@ public class TypeChecking extends DefaultVisitor {
         predicate(sameType(comparison.getLeft(), comparison.getRight()), "The expression types don't match", comparison);
     	predicate(isArithmetic(comparison.getLeft().getType()), "The expression on the left can not be in an arithmetic operation", comparison);
     	predicate(isArithmetic(comparison.getRight().getType()), "The expression on the right can not be in an arithmetic operation", comparison);
-    	comparison.setType(new IntType());
+    	comparison.setType(new BoolType());
     	comparison.setLvalue(false);
     	return null;
     }
@@ -267,6 +274,10 @@ public class TypeChecking extends DefaultVisitor {
     
     private boolean isArithmetic(Type t) {
     	return t instanceof IntType || t instanceof FloatType;
+    }
+    
+    private boolean isLogic(Type t) {
+    	return t instanceof IntType || t instanceof BoolType;
     }
 
     private void notifyError(String errorMessage, Position position) {

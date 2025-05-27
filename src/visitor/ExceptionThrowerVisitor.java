@@ -131,6 +131,12 @@ public class ExceptionThrowerVisitor implements Visitor {
 	}
 
 	@Override
+	public Object visit(BoolLiteral boolLiteral, Object param) {
+
+        throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(BoolLiteral)' has been invoked but it has not been implemented.");
+	}
+
+	@Override
 	public Object visit(Arithmetic arithmetic, Object param) {
 
         throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(Arithmetic)' has been invoked but it has not been implemented.");
@@ -194,6 +200,12 @@ public class ExceptionThrowerVisitor implements Visitor {
 	public Object visit(CharType charType, Object param) {
 
         throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(CharType)' has been invoked but it has not been implemented.");
+	}
+
+	@Override
+	public Object visit(BoolType boolType, Object param) {
+
+        throw new UnsupportedOperationException("'ExceptionThrowerVisitor.visit(BoolType)' has been invoked but it has not been implemented.");
 	}
 
 	@Override

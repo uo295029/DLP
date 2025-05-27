@@ -24,6 +24,7 @@ type returns[Type ast]
     :                                     { $ast = new IntType(); }                              
     |                                     { $ast = new FloatType(); }                            
     |                                     { $ast = new CharType(); }                             
+    |                                     { $ast = new BoolType(); }                             
     | INT_LITERAL type                    { $ast = new ArrayType($INT_LITERAL, $type.ast); }     
     | name=IDENT                          { $ast = new StructType($name); }                      
     |                                     { $ast = new VoidType(); }                             
@@ -50,6 +51,7 @@ expression returns[Expression ast]
     | value=IDENT                         { $ast = new IntLiteral($value); }                     
     | value=IDENT                         { $ast = new FloatLiteral($value); }                   
     | value=IDENT                         { $ast = new CharLiteral($value); }                    
+    | value=IDENT                         { $ast = new BoolLiteral($value); }                    
     | left=expression operator=IDENT right=expression { $ast = new Arithmetic($left.ast, $operator, $right.ast); }
     | expression                          { $ast = new Negate($expression.ast); }                
     | left=expression operator=IDENT right=expression { $ast = new Logic($left.ast, $operator, $right.ast); }

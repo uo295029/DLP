@@ -54,6 +54,16 @@ public class Address extends AbstractCodeFunction {
 		return null;
 	}
 
+	// class BoolLiteral(String value)
+	// phase TypeChecking { Type type, boolean lvalue }
+	@Override
+	public Object visit(BoolLiteral boolLiteral, Object param) {
+
+		out("<instruction>");
+
+		return null;
+	}
+
 	// class Arithmetic(Expression left, String operator, Expression right)
 	// phase TypeChecking { Type type, boolean lvalue }
 	@Override
