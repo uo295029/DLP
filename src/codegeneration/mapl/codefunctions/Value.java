@@ -75,7 +75,9 @@ public class Value extends AbstractCodeFunction {
 	public Object visit(Arithmetic arithmetic, Object param) {
 
 		value(arithmetic.getLeft());
+		convertTo(arithmetic.getLeft().getType(), arithmetic.getType());
 		value(arithmetic.getRight());
+		convertTo(arithmetic.getRight().getType(), arithmetic.getType());
 		out(instruccion.get(arithmetic.getOperator()) + getSuffix(arithmetic.getType()));
 
 		return null;
@@ -85,6 +87,7 @@ public class Value extends AbstractCodeFunction {
 	public Object visit(Negate negate, Object param) {
 
 		value(negate.getExpression());
+		convertTo(negate.getExpression().getType(), new IntType());
 		out("not");
 
 		return null;
@@ -92,9 +95,11 @@ public class Value extends AbstractCodeFunction {
 
 	@Override
 	public Object visit(Logic logic, Object param) {
-
+		
 		value(logic.getLeft());
+		
 		value(logic.getRight());
+		
 		out(instruccion.get(logic.getOperator()));
 
 		return null;
@@ -112,9 +117,17 @@ public class Value extends AbstractCodeFunction {
 	@Override
 	public Object visit(Comparison comparison, Object param) {
 
+		boolean isFloat = comparison.getLeft().getType() instanceof FloatType || comparison.getRight().getType() instanceof FloatType;
+		
 		value(comparison.getLeft());
+		if(isFloat) convertTo(comparison.getLeft().getType(), new FloatType());
+		else convertTo(comparison.getLeft().getType(), new IntType());
+		
 		value(comparison.getRight());
-		out(instruccion.get(comparison.getOperator()) + getSuffix(comparison.getLeft().getType()));
+		if(isFloat) convertTo(comparison.getRight().getType(), new FloatType());
+		else convertTo(comparison.getRight().getType(), new IntType());
+		
+		out(instruccion.get(comparison.getOperator()) + getSuffix(isFloat ? new FloatType() : new IntType()));
 
 		return null;
 	}
@@ -132,41 +145,17 @@ public class Value extends AbstractCodeFunction {
 	public Object visit(Cast cast, Object param) {
 
 		value(cast.getExpression());
-		if (cast.getExpression().getType() instanceof IntType) {
-			if (cast.getCastType() instanceof CharType) {
-				out("i2b");
-			}
-			else if (cast.getCastType() instanceof FloatType) {
-				out("i2f");
-			}
-		}
-		else if (cast.getExpression().getType() instanceof CharType) {
-			if (cast.getCastType() instanceof IntType) {
-				out("b2i");
-			}
-			else if (cast.getCastType() instanceof FloatType) {
-				out("b2i");
-				out("i2f");
-			}
-		}
-		else if (cast.getExpression().getType() instanceof FloatType) {
-			if (cast.getCastType() instanceof IntType) {
-				out("f2i");
-			}
-			else if (cast.getCastType() instanceof CharType) {
-				out("f2i");
-				out("i2b");
-			}
-		}
-
+		convertTo(cast.getExpression().getType(), cast.getType());
+		
 		return null;
 	}
 
 	@Override
 	public Object visit(FunctionCallE functionCallE, Object param) {
 
-		for (Expression expression:functionCallE.getParams()) {
-			value(expression);
+		for(int i = 0; i < functionCallE.getParams().size(); i++) {
+			value(functionCallE.getParams().get(i));
+			convertTo(functionCallE.getParams().get(i).getType(), functionCallE.getFunctionDefinition().getParams().get(i).getType());
 		}
 		out("call " + functionCallE.getName());
 

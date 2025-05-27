@@ -19,8 +19,19 @@ public abstract class AbstractType extends AbstractAST implements Type {
 
 
     // %% User Members -------------------------
-
-        // Methods/attributes in this section will be preserved. Delete if not needed
+	// Methods/attributes in this section will be preserved. Delete if not needed
+	
+	public boolean isValidConversion(Type t) {
+		return false;
+	}
+	
+	public boolean isSimple() {
+		return false;
+	}
+	
+	public Type arithmetic(Type t) {
+		return null;
+	}
 
     // %% --------------------------------------
 }

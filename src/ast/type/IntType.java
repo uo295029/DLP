@@ -39,5 +39,22 @@ public class IntType extends AbstractType  {
     	return 2;
     }
 
+    @Override
+    public boolean isValidConversion(Type t) {
+    	return  (t instanceof FloatType || t instanceof IntType);
+    }
+
+    @Override
+    public boolean isSimple() {
+    	return true;
+    }
+    
+    @Override
+    public Type arithmetic(Type t) {
+    	if(t instanceof CharType || t instanceof IntType) return new IntType();
+    	if(t instanceof FloatType) return new FloatType();
+    	return null;
+    }
+    
     // %% --------------------------------------
 }

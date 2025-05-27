@@ -4,6 +4,7 @@ package codegeneration.mapl.codefunctions;
 
 import ast.Attribute;
 import ast.expression.*;
+import ast.type.IntType;
 import ast.type.StructType;
 import codegeneration.mapl.*;
 
@@ -48,6 +49,7 @@ public class Address extends AbstractCodeFunction {
 
 		address(arrayAccess.getLeft());
 		value(arrayAccess.getRight());
+		convertTo(arrayAccess.getRight().getType(), new IntType());
 		out("pushi " + arrayAccess.getType().getBytes());
 		out("muli");
 		out("addi");

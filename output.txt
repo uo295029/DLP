@@ -1,46 +1,198 @@
 #source "input.txt"
+#TYPE Persona: {
+inicial:char
+sueldo:float
+}
+#GLOBAL empresa:4 * Persona
 call main
 halt
-#FUNC main
+#FUNC inicia
 #RET VOID
-#LOCAL j:int
-#LINE 3
-	main:
+#LOCAL i:int
+#LINE 8
+	inicia:
 enter 2
-#LINE 6
+#LINE 11
 pusha BP
 pushi -2
 addi
-pushi 5
+pushi 0
 storei
 label1:
-#LINE 8
-pusha 0
+#LINE 12
+pusha BP
+pushi -2
+addi
 loadi
-pushi 5
+pushi 4
 lti
 jz label2
-#LINE 9
+#LINE 13
 pusha 0
+pusha BP
+pushi -2
+addi
 loadi
-outi
-pushb 10
-outb
-#LINE 8
+pushi 5
+muli
+addi
+pushi 0
+addi
+pusha BP
+pushi -2
+addi
+loadi
+pushb 65
+b2i
+addi
+i2b
+storeb
+#LINE 14
 pusha 0
-pusha 0
+pusha BP
+pushi -2
+addi
+loadi
+pushi 5
+muli
+addi
+pushi 1
+addi
+pushi 1000
+pusha BP
+pushi -2
+addi
+loadi
+pushi 100
+muli
+addi
+i2f
+storef
+#LINE 15
+pusha BP
+pushi -2
+addi
+pusha BP
+pushi -2
+addi
 loadi
 pushi 1
 addi
 storei
 jmp label1
 label2:
-#LINE 12
+ret	0,2,0
+#FUNC busca
+#PARAM i:float
+#RET VOID
+#LINE 19
+	busca:
+enter 0
+#LINE 20
+pusha BP
+pushi 4
+addi
+loadf
+pushi 0
+i2f
+ltf
+pusha BP
+pushi 4
+addi
+loadf
+pushi 4
+i2f
+gef
+or
+jz label3
+#LINE 21
+ret	0,0,4
+jmp label4
+label3:
+label4:
+#LINE 23
+pusha 0
+pusha BP
+pushi 4
+addi
+loadf
+f2i
+pushi 5
+muli
+addi
+pushi 0
+addi
+loadb
+outb
+pushb 32
+outb
+#LINE 24
+pusha 0
+pusha BP
+pushi 4
+addi
+loadf
+f2i
+pushi 5
+muli
+addi
+pushi 1
+addi
+loadf
+outf
+pushb 10
+outb
+ret	0,0,4
+#FUNC imprime
+#PARAM i:int
+#RET int
+#LINE 27
+	imprime:
+enter 0
+#LINE 28
+pusha BP
+pushi 4
+addi
+loadi
+pushi 1
+gti
+jz label5
+#LINE 29
+pushb 97
+b2i
+ret	2,0,2
+jmp label6
+label5:
+#LINE 31
+pushi 2
+ret	2,0,2
+label6:
+#FUNC main
+#RET VOID
+#LOCAL posicion:int
+#LINE 35
+	main:
+enter 2
+#LINE 38
+call inicia
+#LINE 40
+pusha BP
+pushi -2
+addi
+ini
+storei
+#LINE 41
 pusha BP
 pushi -2
 addi
 loadi
-outi
-pushb 10
-outb
+i2f
+call busca
+#LINE 43
+pusha BP
+pushi -2
+addi
+loadi
+call imprime
+popi
 ret	0,2,0

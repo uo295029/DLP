@@ -38,6 +38,23 @@ public class CharType extends AbstractType  {
     public int getBytes() {
     	return 1;
     }
+    
+    @Override
+    public boolean isValidConversion(Type t) {
+    	return (t instanceof IntType || t instanceof FloatType || t instanceof CharType);
+    }
+    
+    @Override
+    public boolean isSimple() {
+    	return true;
+    }
+    
+    @Override
+    public Type arithmetic(Type t) {
+    	if(t instanceof CharType || t instanceof IntType) return new IntType();
+    	if(t instanceof FloatType) return new FloatType();
+    	return null;
+    }
 
     // %% --------------------------------------
 }
