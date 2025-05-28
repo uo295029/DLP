@@ -1,0 +1,15 @@
+f(a:int, b:float):float {
+	return a + 1;
+}
+
+main() {
+	var real:float;
+	var integer:int;
+	
+	integer = 'a';
+	real = integer;
+	real = 'a';
+	
+	printsp integer, ' ', real, ' ';
+	printsp f('b', 'c');
+}

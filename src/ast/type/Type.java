@@ -24,5 +24,7 @@ public interface Type extends AST {
 	
 	public boolean isSimple();
 	
+	public boolean isValidConversion(Type t);
+	
     // %% --------------------------------------
 }
