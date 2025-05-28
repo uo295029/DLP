@@ -139,8 +139,9 @@ public class Value extends AbstractCodeFunction {
 	@Override
 	public Object visit(FunctionCallE functionCallE, Object param) {
 
-		for (Expression expression:functionCallE.getParams()) {
-			value(expression);
+		for(int i = 0; i < functionCallE.getParams().size(); i++) {
+			value(functionCallE.getParams().get(i));
+			convertTo(functionCallE.getParams().get(i).getType(), functionCallE.getFunctionDefinition().getParams().get(i).getType());
 		}
 		out("call " + functionCallE.getName());
 

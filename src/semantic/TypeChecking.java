@@ -47,7 +47,7 @@ public class TypeChecking extends DefaultVisitor {
     @Override
     public Object visit(Assignment assignment, Object param) {
         super.visit(assignment, param);
-        predicate(sameType(assignment.getLeft(), assignment.getRight()), "The expression types don't match", assignment);
+        predicate(assignment.getRight().getType().isValidConversion(assignment.getLeft().getType()), "The type of the expression on the right can not be converted to the type of the expression on the left", assignment);
         predicate(assignment.getLeft().getType().isSimple(), "The expression on the left must be an instance of a primitive type", assignment);
         predicate(assignment.getLeft().isLvalue(), "The expression on the left is not modifiable", assignment.getLeft());
         return null;
@@ -57,7 +57,7 @@ public class TypeChecking extends DefaultVisitor {
     public Object visit(FunctionCallS functionCallS, Object param) {
     	super.visit(functionCallS, param);
     	if(predicate(functionCallS.getParams().size() == functionCallS.getFunctionDefinition().getParams().size(), "The number of params is invalid", functionCallS))
-    		predicate(sameTypeList(functionCallS.getParams(), functionCallS.getFunctionDefinition().getParams()), "The params types do not match", functionCallS);
+    		predicate(paramList(functionCallS.getParams(), functionCallS.getFunctionDefinition().getParams()), "The params types do not match", functionCallS);
     	return null;
     }
     
@@ -67,7 +67,7 @@ public class TypeChecking extends DefaultVisitor {
     	if(r.getExpression().isEmpty()) 
     		predicate(r.getFunction().getType() instanceof VoidType, "The return of the function " + r.getFunction().getName() + " can not be void", r);
     	else 
-    		predicate(r.getFunction().getType().getClass() == r.getExpression().get().getType().getClass(), "The type of the function " + r.getFunction().getName() + " does not match the return type", r);
+    		predicate(r.getExpression().get().getType().isValidConversion(r.getFunction().getType()), "The type of the function " + r.getFunction().getName() + " does not match the return type", r);
     	return null;
     }
     
@@ -245,7 +245,7 @@ public class TypeChecking extends DefaultVisitor {
     public Object visit(FunctionCallE functionCallE, Object param) {
     	super.visit(functionCallE, param);
     	if(predicate(functionCallE.getParams().size() == functionCallE.getFunctionDefinition().getParams().size(), "The number of params is invalid", functionCallE))
-    		predicate(sameTypeList(functionCallE.getParams(), functionCallE.getFunctionDefinition().getParams()), "The params types do not match", functionCallE);
+    		predicate(paramList(functionCallE.getParams(), functionCallE.getFunctionDefinition().getParams()), "The params types do not match", functionCallE);
     	predicate(!(functionCallE.getFunctionDefinition().getType() instanceof VoidType), "The function return type can not be void: ", functionCallE);
     	functionCallE.setType(functionCallE.getFunctionDefinition().getType());
     	functionCallE.setLvalue(false);
@@ -258,9 +258,9 @@ public class TypeChecking extends DefaultVisitor {
         return (a.getType().getClass() == b.getType().getClass());
     }
     
-    private boolean sameTypeList(List<Expression> a, List<VarDefinition> b) {
+    private boolean paramList(List<Expression> a, List<VarDefinition> b) {
     	for(int i = 0; i < a.size(); i++) {
-    		if(a.get(i).getType().getClass() != b.get(i).getType().getClass()) return false;
+    		if(!a.get(i).getType().isValidConversion(b.get(i).getType())) return false;
     	}
     	return true;
     }

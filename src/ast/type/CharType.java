@@ -43,6 +43,11 @@ public class CharType extends AbstractType  {
     public boolean isSimple() {
     	return true;
     }
+    
+    @Override
+    public boolean isValidConversion(Type t) {
+    	return (t instanceof CharType || t instanceof IntType || t instanceof FloatType);
+    }
 
     // %% --------------------------------------
 }

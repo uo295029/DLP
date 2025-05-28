@@ -24,5 +24,10 @@ public abstract class AbstractType extends AbstractAST implements Type {
 		public boolean isSimple() {
 			return false;
 		}
+		
+		public boolean isValidConversion(Type t) {
+			return false;
+		}
+		
     // %% --------------------------------------
 }
